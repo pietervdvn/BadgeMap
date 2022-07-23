@@ -11,3 +11,4 @@ BTN_LEFT = "left"
 BTN_RIGHT = "right"
 
 BTN_HOME = "home"
+BTN_MENU = "menu"

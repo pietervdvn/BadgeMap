@@ -16,3 +16,15 @@ def drawFill(color):
 
 def drawRect(x, y, width, height, is_filled, color):
     print("Drawing a rectangle")
+
+
+def width():
+    return 320
+
+
+def height():
+    return 240
+
+
+def brightness(brightness):
+    print("Changed brightness")
