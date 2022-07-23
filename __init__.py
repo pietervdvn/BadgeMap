@@ -9,9 +9,9 @@ version = "0.0.25 (for MCH)"
 print("Starting BadgeMap " + version)
 
 
-def draw_banner(h, text):
-    display.drawRect(10, h, 320, 20, True, 0x000000)
-    display.drawText(10, h, text)
+def draw_banner(h, text, background_colour=0x000000, text_colour=0xffffff):
+    display.drawRect(0, h, 320, 20, True, background_colour)
+    display.drawText(10, h+2, text, text_colour)
     display.flush()
 
 
@@ -23,7 +23,9 @@ class MenuItem:
 
 
 class Menu:
-    
+
+    selected = 0
+
     def __init__(self, title, menuitems):
         """
 
@@ -31,6 +33,27 @@ class Menu:
         """
         self.menuitems = menuitems
         self.title = title
+
+    def update(self):
+        draw_banner(0, self.title, 0xffffff, 0x000000)
+        for i in range(len(self.menuitems)):
+            item = self.menuitems[i]
+            draw_banner(25 + i * 20, item.title)
+        display.drawRect(2, 32 + self.selected * 20, 6, 6, True, 0xffffff)
+        display.flush()
+        
+    def move(self, direction):
+        if direction == "a":
+            self.menuitems[self.selected].on_selected()
+            return
+        
+        if direction == "up":
+            self.selected = self.selected - 1
+            if self.selected < 0:
+                self.selected = len(self.menuitems) - 1
+        if direction == "down":
+            self.selected = (self.selected + 1) % len(self.menuitems)
+        self.update()
 
 
 class Style:
@@ -61,6 +84,9 @@ class Location:
 
     callbacks = []
 
+    def update(self):
+        self.call_callbacks()
+
     def call_callbacks(self):
         for f in self.callbacks:
             try:
@@ -68,9 +94,7 @@ class Location:
             except Exception as e:
                 print("Could not execute a callback of location", str(e))
 
-    def zoom_in(self, pressed):
-        if not pressed:
-            return
+    def zoom_in(self):
         self.z = self.z + 1
         factor = math.exp(self.z - 3)
         self.lon = self.lon + (320 / factor)
@@ -78,17 +102,20 @@ class Location:
         self.call_callbacks()
         print("Zoom in: new location: " + str(self.lat) + "," + str(self.lon))
 
-    def zoom_out(self, pressed):
-        if not pressed:
-            return
+    def zoom_out(self):
         factor = math.exp(self.z - 3)
         self.lon = self.lon - (320 / factor)
         self.lat = self.lat + (240 / factor)
         self.z = self.z - 1
         self.call_callbacks()
 
-    def move(self, pressed, dir, trigger_callback=True):
-        if not pressed:
+    def move(self, dir, trigger_callback=True):
+        if dir is "a":
+            self.zoom_in()
+            return
+
+        if dir is "b":
+            self.zoom_out()
             return
 
         amount = 1 / math.exp(self.z - 7)
@@ -104,14 +131,6 @@ class Location:
         print("New location: " + str(self.lon) + ", " + str(self.lat) + ", shifted by " + str(amount))
         if trigger_callback:
             self.call_callbacks()
-
-    def attachButtons(self):
-        buttons.attach(buttons.BTN_A, lambda pressed: self.zoom_in(pressed))
-        buttons.attach(buttons.BTN_B, lambda pressed: self.zoom_out(pressed))
-        buttons.attach(buttons.BTN_UP, lambda pressed: self.move(pressed, "up"))
-        buttons.attach(buttons.BTN_DOWN, lambda pressed: self.move(pressed, "down"))
-        buttons.attach(buttons.BTN_LEFT, lambda pressed: self.move(pressed, "left"))
-        buttons.attach(buttons.BTN_RIGHT, lambda pressed: self.move(pressed, "right"))
 
 
 class MapDrawer:
@@ -170,12 +189,33 @@ class MapDrawer:
             self.drawLabel(l)
 
 
+class Navigatable:
+    current_navigator = None
+
+    def move(self, pressed, movement):
+        if not pressed:
+            return
+        if (self.current_navigator is None):
+            return
+        self.current_navigator.move(movement)
+
+    def attachButtons(self):
+        buttons.attach(buttons.BTN_A, lambda pressed: self.move(pressed, "a"))
+        buttons.attach(buttons.BTN_B, lambda pressed: self.move(pressed, "b"))
+        buttons.attach(buttons.BTN_UP, lambda pressed: self.move(pressed, "up"))
+        buttons.attach(buttons.BTN_DOWN, lambda pressed: self.move(pressed, "down"))
+        buttons.attach(buttons.BTN_LEFT, lambda pressed: self.move(pressed, "left"))
+        buttons.attach(buttons.BTN_RIGHT, lambda pressed: self.move(pressed, "right"))
+
+
 def searchPath(spec):
     if (spec in os.listdir(".")):
         return "./" + spec
-    if ("sd" in os.listdir("/")):
+    try:
+        os.listdir("/sd/apps/python/badgemap")
         return "/sd/apps/python/badgemap/" + spec
-    return "/apps/python/badgemap/" + spec
+    except:
+        return "/apps/python/badgemap/" + spec
 
 
 def load_buildings(location):
@@ -288,22 +328,55 @@ def load_geojson(filename, location, determine_color):
 
 
 buttons.attach(buttons.BTN_HOME, lambda _: mch22.exit_python())
-display.drawFill(0x00000000)
-draw_banner(10, "Starting badgemap! This is " + version)
-display.flush()
+draw_banner(80, "Starting badgemap! This is " + version)
+
+def print_copyright():
+    display.drawFill(0x00000000)
+    draw_banner(100, "Made by Pietervdvn")
+    draw_banner(120, "Roads and water: (c) OpenStreetMap.org")
+    draw_banner(160, "Interested in maps?")
+    draw_banner(180, "Come to 'OpenStreetMap for Beginners' on monday")
+    draw_banner(200, "11:00, Envelope (NL)  -- 21:00, DNA (EN)")
+    display.flush()
+
+print_copyright()
 
 location = Location()
-location.attachButtons()
 
 displayHeight = 240
 displayWidth = 320
 
+navigator = Navigatable()
+navigator.attachButtons()
+
+
+
+main_menu = Menu("MapBadge options", [
+    MenuItem("Copyright", lambda: print_copyright()),
+    MenuItem("Foo world", lambda: display.drawFill(0x00000)),
+    MenuItem("Exit menu", lambda: toggle_menu(True))
+])
+
+
+def toggle_menu(pressed):
+    if not pressed:
+        return
+    if navigator.current_navigator == location:
+        navigator.current_navigator = main_menu
+    else:
+        navigator.current_navigator = location
+    navigator.current_navigator.update()
+
+
+buttons.attach(buttons.BTN_MENU, lambda pressed: toggle_menu(pressed))
+
+navigator.current_navigator = location
+
 
 def map_overlay():
     # Elements shown above the map
-    display.drawRect(0, displayHeight - 20, displayWidth, 20, True, 0x000000)
-    display.drawText(0, displayHeight - 20, "Press HOME to exit")
-    display.drawText(displayWidth - 20, displayHeight - 20, str(location.z))
+    display.drawRect(27, displayHeight - 20, 30, 20, True, 0x000000)
+    display.drawText(32, displayHeight - 20, "exit")
     display.flush()
 
 
@@ -313,7 +386,7 @@ location.callbacks.append(lambda _: display.drawFill(0x406000))
 def road_color(properties):
     if "surface" in properties and properties["surface"] == "grass":
         return 0x00ff00
-    return 0x000000
+    return 0xffffff
 
 
 load_geojson("water.json", location, lambda _: 0x0000ff)

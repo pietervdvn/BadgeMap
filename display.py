@@ -6,7 +6,7 @@ def flush():
     pass
 
 
-def drawText(x, y, string):
+def drawText(x, y, string, text_color=0x000000):
     print("Drawing text " + string + " at " + str(x) + "," + str(y))
 
 
