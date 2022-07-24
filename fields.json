@@ -1,0 +1,482 @@
+{
+  "type": "FeatureCollection",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.522756081,
+          52.282092375
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Torvalds\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D867"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.529699931,
+          52.283565557
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Lovelace\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D862"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.522866,
+          52.2831858
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Manning\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D863"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.524470433,
+          52.28202748
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "South Trunk",
+        "text_size": 4.0,
+        "text_rotation": 72.1,
+        "entityhandle": "D874"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.525767023,
+          52.285612965
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Uplink",
+        "text_size": 4.0,
+        "text_rotation": 72.1,
+        "entityhandle": "D876"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.529431618,
+          52.284538173
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "North Trunk",
+        "text_size": 4.0,
+        "text_rotation": 72.1,
+        "entityhandle": "D875"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.529325698,
+          52.282284127
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Side Channel",
+        "text_size": 3.0,
+        "text_rotation": 72.1,
+        "entityhandle": "1A85E"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.526966891,
+          52.283829437
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Liskov\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D861"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.52371828,
+          52.284033756
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Lamarr\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D860"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.532692035,
+          52.284069816
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Hopper\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D85F"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.529948548,
+          52.284389281
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Hamilton\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D85D"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.528892795,
+          52.28473416
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Goldwasser\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D85C"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.527046582,
+          52.285727402
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Chriet\nTitulaer\nIsland",
+        "text_size": 4.0,
+        "entityhandle": "E1C2"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.526368984,
+          52.287825713
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Alexander\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D9DB"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.526802719,
+          52.284974155
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Flowers\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D85B"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.533457499,
+          52.286451319
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Engelbart\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D85A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.530903579,
+          52.286531666
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Boole\nfield",
+        "text_size": 5.0,
+        "entityhandle": "B949"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.530690119,
+          52.287515411
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Babbage\nfield",
+        "text_size": 5.0,
+        "entityhandle": "B948"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.529484678,
+          52.285841914
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Clarke\nfield",
+        "text_size": 5.0,
+        "entityhandle": "B947"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.524044986,
+          52.286629692
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Uplink",
+        "text_size": 4.0,
+        "text_rotation": -4.1,
+        "entityhandle": "D9DC"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.529198881,
+          52.281808232
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Bridge Over Troubled Waters",
+        "text_size": 0.75,
+        "text_rotation": -17.9,
+        "entityhandle": "1A405"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.52577972,
+          52.284662605
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Backbone Boulevard",
+        "text_size": 4.0,
+        "text_rotation": -17.9,
+        "entityhandle": "D873"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.531465836,
+          52.282752424
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Snowden\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D866"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.52923746,
+          52.282848125
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Rhodes\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D865"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.530371649,
+          52.280645348
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Zuse\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D86B"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.526510534,
+          52.283003451
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Olsen\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D864"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.52373289,
+          52.281195355
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Wozniak\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D86A"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.528398821,
+          52.282355394
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Wilson\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D869"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.526265481,
+          52.282012884
+        ]
+      },
+      "properties": {
+        "layer": "terrain ... fields ... labels",
+        "text": "Turing\nfield",
+        "text_size": 5.0,
+        "entityhandle": "D868"
+      }
+    }
+  ]
+}
