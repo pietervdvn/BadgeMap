@@ -515,7 +515,11 @@ class Main:
     def select_item(self, pressed):
         if (not pressed):
             return
-        self.selected_label = self.location.currently_selected
+        if self.selected_label is None:
+            self.selected_label = self.location.currently_selected
+        else:
+            self.selected_label = None
+        self.location.update()
 
     def toggle_background(self):
         if self.background_color == 0x000000:
