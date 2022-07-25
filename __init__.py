@@ -174,7 +174,7 @@ class Location:
             self.zoom_out()
             return
 
-        amount = 1 / math.exp(self.z - 7)
+        amount = 1 / math.exp(self.z - 10)
         if dir == "up":
             self.lat += amount
         if dir == "down":
@@ -189,10 +189,17 @@ class Location:
             self.call_callbacks()
 
     def lonlat_to_xy(self, lon, lat):
-        factor = math.exp(self.z - 3)
-        x = (lon - self.lon) * factor
-        y = 0 - (lat - self.lat) * factor
-        return x, y
+      n = 2.0 ** self.z
+      xtl = (self.lon + 180.0) / 360.0 * n
+      self_lat_rad = math.radians(self.lat)
+      ytl = (1.0 - math.asinh(math.tan(self_lat_rad)) / math.pi) / 2.0 * n
+      xarg = (lon + 180.0) / 360.0 * n
+      lat_rad = math.radians(lat)
+      yarg = (1.0 - math.asinh(math.tan(lat_rad)) / math.pi) / 2.0 * n
+      x = (xarg - xtl)*265
+      y = (yarg - ytl)*265
+      return (x, y)
+
 
 
 class MapDrawer:
@@ -213,12 +220,10 @@ class MapDrawer:
         self.features = features
 
     def drawCoordinates(self, coordinates, style):
-        factor = math.exp(self.location.z - 3)
         projected = []
         has_point_in_range = False
         for c in coordinates:
-            lon = (c[0] - self.location.lon) * factor
-            lat = 0 - (c[1] - self.location.lat) * factor
+            lon, lat = self.location.lonlat_to_xy(c[0], c[1])
             projected.append([lon, lat])
             if 0 < lon < self.displayWidth and 0 < lat < self.displayHeight:
                 has_point_in_range = True
