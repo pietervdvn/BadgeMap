@@ -199,8 +199,8 @@ class Location:
       xtl = (self.lon + 180.0) / 360.0 * n
       self_lat_rad = math.radians(self.lat)
       ytl = (1.0 - math.asinh(math.tan(self_lat_rad)) / math.pi) / 2.0 * n
-      xtile = xtl + x
-      ytile = ytl + y
+      xtile = xtl + x/256
+      ytile = ytl + y/256
       lon_deg = xtile / n * 360.0 - 180.0
       lat_rad = math.atan(math.sinh(math.pi * (1 - 2 * ytile / n)))
       lat_deg = math.degrees(lat_rad)
