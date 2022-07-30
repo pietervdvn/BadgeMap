@@ -6,8 +6,8 @@ def flush():
     pass
 
 
-def drawText(x, y, string, text_color=0x000000):
-    print("Drawing text " + string + " at " + str(x) + "," + str(y))
+def drawText(x, y, string, text_color=0x000000, font=None, w=0, h=0):
+    print("Drawing text " + string + " at " + str(x) + "," + str(y) + " in " + font)
 
 
 def drawFill(color):
@@ -28,3 +28,11 @@ def height():
 
 def brightness(brightness):
     print("Changed brightness")
+
+
+def getTextWidth(joined, font=None):
+    return 42
+
+
+def getTextHeight(chunk, font=None):
+    return 12
