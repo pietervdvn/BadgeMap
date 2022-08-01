@@ -46,13 +46,13 @@ FONTS = {
 }
 
 WEEKDAYS = {
-    1: 'Sunday',
-    2: 'Monday',
-    3: 'Tuesday',
-    4: 'Wednesday',
-    5: 'Thursday',
-    6: 'Friday',
-    7: 'Saturday'
+    1: 'Sun',
+    2: 'Mon',
+    3: 'Tue',
+    4: 'Wed',
+    5: 'Thu',
+    6: 'Fri',
+    7: 'Sat'
 }
 
 TOPIC_INFO = b'home/house/alert/info_string'
@@ -133,28 +133,58 @@ class VEvent:
         sec = int(datetime[13:15])
         return year, month, day, hour, min, sec
 
+    def whole_day(self):
+        return not (self.properties["DTSTART"].find("T") > 0 and self.properties["DTEND"].find("T") > 0)
+
     def start_time(self):
-        for k in self.properties.keys():
-            if k.startswith("DTSTART"):
-                return self.parse_date(self.properties[k])
-        print("Could not determine start-time for" + str(self.properties))
+        """Returns a six-tuple with the start-time"""
+        if "DTSTART" not in self.properties:
+            return None
+        return self.parse_date(self.properties["DTSTART"])
 
     def end_time(self):
-        for k in self.properties.keys():
-            if k.startswith("DTEND"):
-                datetime = self.properties[k]
-                return self.parse_date(datetime)
-        print("Could not determine end-time for " + str(self.properties))
+        if "DTEND" not in self.properties:
+            return None
+        datetime = self.properties["DTEND"]
+        return self.parse_date(datetime)
 
     def activeDuring(self, start, end):
-        return start < self.start_time() and self.end_time() < end
+        """
+        Indicates if the event _overlaps_ with the given time, i.e. the specified start-time falls before the end-time of the event
+        and vice versa.
+        :param start: 
+        :param end: 
+        :return: 
+        """
+        return start < self.end_time() and self.start_time() < end
 
     def summary(self):
-        print(self.properties)
         l = ""
         if "LOCATION" in self.properties:
             l = " location: " + self.properties["LOCATION"]
         return self.properties["SUMMARY"] + l
+
+    def draw_on_display(self, x=0, y=0):
+        strt = format_time(self.start_time())
+        if self.whole_day():
+            x += display.getTextWidth("00:00") + 5
+        else:
+            display.drawText(x, y, strt)
+            end = format_time(self.end_time())
+            display.drawText(x, y + display.getTextHeight(strt) + 1, end)
+            x += display.getTextWidth(strt) + 5
+
+        location_font = "exo2_thin22"
+        summary_font = "roboto_black22"
+        if "LOCATION" in self.properties:
+            loc = self.properties["LOCATION"]
+            loc_w = display.getTextWidth(loc, location_font)
+            display.drawText(display.width() - loc_w, y, loc, 0xcccccc, location_font)
+        display.drawText(x, y, self.properties["SUMMARY"], 0xffffff, summary_font)
+        line_y = y + 6 + display.getTextHeight("Abcdef", summary_font)
+        display.drawLine(x, line_y, display.width() - 5, line_y, 0x888888)
+        display.flush()
+        return y + 6 + display.getTextHeight("Abcdef", summary_font)
 
 
 class Calendar:
@@ -208,7 +238,7 @@ class Calendar:
         fmeta.write(str(modification_time))
         fmeta.close()
 
-    def active_next(self, start, end, max_count = 9999999):
+    def active_next(self, start, end, max_count=9999999):
         """
         Returns a list of all VEVENTs that are active between 'start' and 'end'
         :param ical_text: 
@@ -219,17 +249,40 @@ class Calendar:
         print("Determining active events between " + str(start) + " and " + str(end))
         matching_events = []
 
-        def on_event(event: VEvent):
+        def on_event(event: VEvent, index: int):
             if event.activeDuring(start, end):
                 matching_events.append(event)
                 if len(matching_events) > max_count:
                     raise StopIteration()
+
         try:
             self.parse_ics_from_file(on_event)
         except StopIteration:
             pass
-        
+
         return matching_events
+
+    __current_draw_y = 0
+
+    def draw_events_from_file(self, start_date, end_date, x=0, y=0):
+        display.drawText(0, display.height() - 7, "Parsing calendar...", 0x888888, "7x5")
+        display.flush()
+        self.__current_draw_y = y
+
+        def handle(event: VEvent, index: int):
+            if index % 20 == 0:
+                xmsg = display.width() - display.getTextWidth(str(index), "7x5")
+                ymsg = display.height() - 7
+                display.drawRect(xmsg, ymsg, display.width(), display.height(), True, 0)
+                display.drawText(xmsg, ymsg, str(index), 0x888888, "7x5")
+                display.flush()
+                pass
+            if event.activeDuring(start_date, end_date):
+                # Yeah, this is ugly... BUt well, python doesn't properly support closurs...
+                self.__current_draw_y = self.__current_draw_y + event.draw_on_display(x, self.__current_draw_y)
+
+        self.parse_ics_from_file(handle)
+        display.drawRect(0, display.height() - 7, display.width(), display.height(), True, 0)
 
     def parse_ics_from_file(self, on_event):
         """
@@ -244,113 +297,75 @@ class Calendar:
         current_properties = None
         key = None
         skip_line = False
-        for line in f.readlines():
-            line = line.rstrip("\n\r")
-            if line == "BEGIN:VEVENT":
-                current_properties = {}
-                continue
-            if line == "END:VEVENT":
-                on_event(VEvent(current_properties))
-                current_properties = None
-                continue
-            if current_properties is None:
-                continue
-            if skip_line:
-                skip_line = False
-                continue
-            if line.startswith("ATTENDEE;"):
-                skip_line = True
-                continue
-            if line.startswith(" "):
-                current_properties[key] = current_properties[key] + line[1:]
-                continue
-            props = line.split(":")
-            key = props[0]
-            current_properties[key] = props[1]
+        total = 0
+        try:
+            for line in f.readlines():
+                line = line.rstrip("\n\r")
+                if line == "BEGIN:VEVENT":
+                    total += 1
+                    current_properties = {}
+                    continue
+                if line == "END:VEVENT":
+                    on_event(VEvent(current_properties), total)
+                    current_properties = None
+                    continue
+                if current_properties is None:
+                    continue
+                if skip_line:
+                    skip_line = False
+                    continue
+                if line.startswith("ATTENDEE;"):
+                    skip_line = True
+                    continue
+                if line.startswith(" "):
+                    current_properties[key] = current_properties[key] + line[1:]
+                    continue
+                props = line.split(":")
+                key = props[0].split(";")[0]
+                current_properties[key] = props[1]
+        except Exception as e:
+            f.close()
+            raise e
 
 
-class Output:
-    """Manages all formatting, display."""
-
-    def __init__(self):
-        self._old_date_str = ''
-        self._old_time_str = ''
-
-    def draw(self, datetime):
-        """Draw the date & time.
-
-        Clear the screen to prevent ghosting:
-            - When the date changes.
-            - When entering an alert.
-            - When leaving an alert.
-        """
-        time_str = self._format_time(datetime)
-        date_str = self._format_date(datetime)
-
-        if time_str == self._old_time_str:
-            return
-
-        if date_str != self._old_date_str:
-            # we've come out of an alert or the date changed,
-            # so clear the screen to prevent ghosting.
-            display.drawFill(BLACK)
-            display.flush()
-
-        self._old_date_str = date_str
-        self._old_time_str = time_str
-
-        display.drawFill(WHITE)
-        display.drawText(0, 0, time_str, BLACK, FONTS['7x5'], 5, 5)
-
-        bottom = display.height() - 2  # the bottom pixel seems to clip.
-        date_y = bottom - (display.getTextHeight(date_str, FONTS['7x5']) * 3)
-        display.drawText(0, date_y, date_str, BLACK, FONTS['7x5'], 3, 3)
-        display.flush()
-
-    def _format_time(self, datetime):
-        hours = datetime[3]
-        minutes = datetime[4]
-        return '%02d:%02d' % (hours, minutes)
-
-    def _format_date(self, datetime):
-        weekday = datetime[6]
-        return WEEKDAYS[weekday]
+def format_time(datetime):
+    hours = datetime[3]
+    minutes = datetime[4]
+    return '%02d:%02d' % (hours, minutes)
 
 
-
-def main():
-    easydraw.msg('setting up WiFi...')
-    if not init_wifi():
-        easydraw.msg('could not set up WiFi')
-        return
-
-    easydraw.msg('setting up RTC...')
-    clock = Clock()
-    output = Output()
-    while True:
-        output.draw(clock.get())
-        utime.sleep(1)
+def _format_date(datetime):
+    return str(datetime[2]) + "/" + str(datetime[1])
 
 
+def draw_time(datetime, font_color=0xffffff):
+    """Draw the date & time.
+    Returns the first free Y-height
 
-clock = Clock()
+    Clear the screen to prevent ghosting:
+        - When the date changes.
+        - When entering an alert.
+        - When leaving an alert.
+    """
+    time_str = format_time(datetime)
+    display.drawText(0, 0, time_str, font_color, '7x5', 4, 4)
+    date_str = _format_date(datetime)
+    date_font = "permanentmarker22"
+    date_str_w = display.getTextWidth(date_str, date_font)
+    datestr_h = display.getTextHeight(date_str, date_font)
+    display.drawText(display.width() - date_str_w - 5, 4, date_str, font_color, date_font)
 
-password = None
-passwordpath = "/sd/apps/python/badgemap/calendar1.ics.password"
-try:
-    f = open(passwordpath, "r")
-    password = f.read()
-    f.close()
-except Exception:
-    print("Could not read password file")
+    weekday = WEEKDAYS[datetime[6]]
+    weekday_font = date_font
+    weekday_w = display.getTextWidth(weekday, weekday_font)
+    weekday_h = display.getTextHeight(weekday, weekday_font)
+    display.drawText(display.width() - date_str_w - weekday_w - 9, (datestr_h - weekday_h) + 4, weekday, font_color,
+                     weekday_font)
 
-if password is None:
-    password = input("password? ")
-    f = open(passwordpath, "w")
-    f.write(password)
-    f.close()
+    line_y = datestr_h + 11
+    display.drawLine(0, line_y, display.width(), line_y, 0x888888)
+    display.drawLine(0, line_y + 1, display.width(), line_y + 1, 0xffffff)
+    display.drawLine(0, line_y + 2, display.width(), line_y + 2, 0x888888)
 
-c = Calendar(clock, "/sd/apps/python/badgemap/calendar1.ics", password)
-c.update((0, 0, 0, 0, 1, 0))
-
-c.active_next((2022, 7, 1, 0, 0, 0), (2022, 8, 1, 0, 0, 0))
+    display.flush()
+    return line_y + 3

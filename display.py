@@ -6,7 +6,8 @@ def flush():
     pass
 
 
-def drawText(x, y, string, text_color=0x000000, font=None, w=0, h=0):
+def drawText(x: int, y: int, string: str, text_color: int = 0x000000, font: str = None, scaling_x: int = 0,
+             scaling_y: int = 0):
     print("Drawing text " + string + " at " + str(x) + "," + str(y) + " in " + font)
 
 
@@ -36,3 +37,7 @@ def getTextWidth(joined, font=None):
 
 def getTextHeight(chunk, font=None):
     return 12
+
+
+def listFonts():
+    return ["permanentmarker22", "7x5"]
