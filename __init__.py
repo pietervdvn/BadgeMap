@@ -129,7 +129,7 @@ class Location:
 
     lat = 52.2839
     lon = 5.5254
-    z = 15
+    z = 18
 
     currently_selected = None
 
@@ -150,18 +150,12 @@ class Location:
         if (self.z >= 20):
             return
         self.z = self.z + 1
-        factor = math.exp(self.z - 3)
-        self.lon = self.lon + (display.width() / factor)
-        self.lat = self.lat - (display.height() / factor)
         self.call_callbacks()
         print("Zoom in: new location: " + str(self.lat) + "," + str(self.lon))
 
     def zoom_out(self):
         if (self.z <= 12):
             return
-        factor = math.exp(self.z - 3)
-        self.lon = self.lon - (display.width() / factor)
-        self.lat = self.lat + (display.height() / factor)
         self.z = self.z - 1
         self.call_callbacks()
 
@@ -196,10 +190,21 @@ class Location:
       xarg = (lon + 180.0) / 360.0 * n
       lat_rad = math.radians(lat)
       yarg = (1.0 - math.asinh(math.tan(lat_rad)) / math.pi) / 2.0 * n
-      x = (xarg - xtl)*265
-      y = (yarg - ytl)*265
+      x = (xarg - xtl)*265 + display.width()/2
+      y = (yarg - ytl)*265 + display.height()/2
       return (x, y)
 
+    def xy_to_lonlat(self, x, y):
+      n = 2.0 ** self.z
+      xtl = (self.lon + 180.0) / 360.0 * n
+      self_lat_rad = math.radians(self.lat)
+      ytl = (1.0 - math.asinh(math.tan(self_lat_rad)) / math.pi) / 2.0 * n
+      xtile = xtl + x/256
+      ytile = ytl + y/256
+      lon_deg = xtile / n * 360.0 - 180.0
+      lat_rad = math.atan(math.sinh(math.pi * (1 - 2 * ytile / n)))
+      lat_deg = math.degrees(lat_rad)
+      return (lat_deg, lon_deg)
 
 
 class MapDrawer:
