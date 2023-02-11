@@ -1,3 +1,5 @@
+# This is a stub of the buttons module
+
 def attach(button, myCallback):
     print("Attached a callback to " + button)
     pass
