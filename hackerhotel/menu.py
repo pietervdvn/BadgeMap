@@ -23,6 +23,8 @@ class Menu:
     selected = 0
     dirty = True
     previous_offset = 0
+    
+    postdraw = []
 
     def __init__(self, title, menuitems, fallback):
         """
@@ -58,6 +60,9 @@ class Menu:
                              0xffffff)
         display.flush()
         self.dirty = False
+        
+        for f in self.postdraw:
+            f()
 
     def move(self, direction):
         if direction == "a":

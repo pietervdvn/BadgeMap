@@ -1,3 +1,5 @@
+import utime
+
 import mch22
 import navigatable
 from menu import Menu, MenuItem
@@ -5,6 +7,7 @@ from drawmap import LineLayer, Location, PointLayer
 import display
 import json
 import buttons
+import wifi
 
 def fromRgb(rgb):
     [r,g,b] = rgb
@@ -32,6 +35,7 @@ class State:
         self.run_callbacks()
     
 
+
 class Main:
     navigator = navigatable.Navigatable()
     maplocation = Location()
@@ -40,6 +44,11 @@ class Main:
     Set 'selected' with an element from PointLayer to trigger a line around it
     """
     state = State()
+    
+    """
+    Has NTP been requested from wifi?
+    """
+    ntp_req=  False
     
     def drawBanner(self, text):
         display.drawRect(0, display.height() - 16, display.width(), 16, True, 0x000000)
@@ -141,9 +150,46 @@ class Main:
         
         return [searchMenu]
         
+    def ntp(self):
+        if self.ntp_req:
+            return
+        self.ntp_req = True
+        print("Requesting NTP")
+        try:
+            wifi.ntp()
+        except:
+            pass
+        
+    def drawUtilsTime(self):
+        y = display.height() - 12
+        (year, m, d, h, min, secs, wday, dayinyear) = utime.localtime()
+        if wifi.status():
+            display.drawRect(0, y, 10, 12, True, 0xffffff)
+            display.drawText(0, y , "W", 0x888888,"exo2_bold12")
+            self.ntp()
+            
+        if year < 2023:
+            return
+        if h < 10:
+            h = "0"+str(h)
+        else:
+            h = str(h)
+        if min < 10:
+            min = "0"+str(min)
+        else:
+            min = str(min)
+
+        msg = h+":"+min
+        display.drawRect(20, y, display.getTextWidth(msg, "exo2_bold12"), 12,True, 0xfffffff)
+        display.drawText(20, y,msg, 0x888888,"exo2_bold12")
+        print(msg)
+        display.flush()
 
     def main(self):
-        
+        try:
+            wifi.connect()
+        except Exception as e:
+            print("Connecting to wifi failed: "+str(e))
         configF = open("config.json", "r")
         config = json.loads(configF.read())
         configF.close()
@@ -160,6 +206,7 @@ class Main:
         ]
         
         mainmenu = Menu("HackerHotel Companion",items, lambda: mch22.exit_python())
+        mainmenu.postdraw.append(lambda: self.drawUtilsTime())
         navigator.set_navigator(mainmenu)
         buttons.attach(buttons.BTN_MENU, lambda b: navigator.set_navigator(mainmenu))
 
@@ -169,7 +216,7 @@ class Main:
         
         mainmenu.update(True)
 
-    # navigator.set_navigator(maplocation)
+        
 
 
 Main().main()

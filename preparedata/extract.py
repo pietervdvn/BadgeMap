@@ -98,10 +98,11 @@ def read_geojson(inputfile, mustHaveProperties):
         result.append(f)
     return result
         
-exportLines(read_geojson("indoors.geojson", ["building"]), [], "buildings.lines")
+p = "../hackerhotel/"
+exportLines(read_geojson("indoors.geojson", ["building"]), [], p + "buildings.lines")
 exportLines(read_geojson("highways.geojson", []), [], "highways.lines")
 
-exportLabels(read_geojson("addresses.geojson", ["addr:housenumber"]), ["addr:housenumber"], "addresses.points")
+exportLabels(read_geojson("addresses.geojson", ["addr:housenumber"]), ["addr:housenumber"], p +"addresses.points")
 
-exportLines(read_geojson("indoors.geojson", ["indoor","name"]), ["name"], "rooms.lines")
-exportLabels(read_geojson("indoors.geojson", ["indoor","name"]), ["name"], "rooms.points")
+exportLines(read_geojson("indoors.geojson", ["indoor","name"]), ["name"], p +"rooms.lines")
+exportLabels(read_geojson("indoors.geojson", ["indoor","name"]), ["name"], p +"rooms.points")

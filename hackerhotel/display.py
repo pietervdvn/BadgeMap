@@ -10,7 +10,7 @@ def flush():
 def getTextWidth(string):
     return 42
 
-def drawText(x, y, string, text_color=0x000000):
+def drawText(x, y, string, text_color=0x000000, font=None, xscale=1, yscale=1):
     print("Drawing text " + string + " at " + str(x) + "," + str(y))
 
 
