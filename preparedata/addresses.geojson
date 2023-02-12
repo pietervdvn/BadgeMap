@@ -1,0 +1,1148 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-ide",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2023-02-11T13:46:53Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731455817",
+        "addr:city": "Garderen",
+        "addr:housenumber": "185",
+        "addr:postcode": "3886MN",
+        "addr:street": "Apeldoornsestraat",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7260298,
+          52.2191108
+        ]
+      },
+      "id": "node/2731455817"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731455821",
+        "addr:city": "Garderen",
+        "addr:housenumber": "187",
+        "addr:postcode": "3886MN",
+        "addr:street": "Apeldoornsestraat",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7260595,
+          52.2191646
+        ]
+      },
+      "id": "node/2731455821"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731455955",
+        "addr:city": "Garderen",
+        "addr:housenumber": "2",
+        "addr:postcode": "3886PV",
+        "addr:street": "Oude Nijkerkerweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7220191,
+          52.2194557
+        ]
+      },
+      "id": "node/2731455955"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458345",
+        "addr:city": "Garderen",
+        "addr:housenumber": "60",
+        "addr:postcode": "3886MK",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7217445,
+          52.221361
+        ]
+      },
+      "id": "node/2731458345"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458393",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7210782,
+          52.2207733
+        ]
+      },
+      "id": "node/2731458393"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458440",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C10",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7211898,
+          52.2199848
+        ]
+      },
+      "id": "node/2731458440"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458445",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C11",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7217939,
+          52.219838
+        ]
+      },
+      "id": "node/2731458445"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458450",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C12",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7218798,
+          52.2197969
+        ]
+      },
+      "id": "node/2731458450"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458456",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C13",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7213766,
+          52.2195243
+        ]
+      },
+      "id": "node/2731458456"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458460",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C14",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.721283,
+          52.2195706
+        ]
+      },
+      "id": "node/2731458460"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458466",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C15",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7208193,
+          52.2194735
+        ]
+      },
+      "id": "node/2731458466"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458471",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C16",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7207353,
+          52.2195199
+        ]
+      },
+      "id": "node/2731458471"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458482",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C17",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7200113,
+          52.219648
+        ]
+      },
+      "id": "node/2731458482"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458487",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C18",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7199255,
+          52.2196969
+        ]
+      },
+      "id": "node/2731458487"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458492",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C19",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7196178,
+          52.2194491
+        ]
+      },
+      "id": "node/2731458492"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458497",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C20",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7195814,
+          52.2194968
+        ]
+      },
+      "id": "node/2731458497"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458502",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C21",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7195564,
+          52.2198
+        ]
+      },
+      "id": "node/2731458502"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458507",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C22",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7194733,
+          52.2198444
+        ]
+      },
+      "id": "node/2731458507"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458512",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C23",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7192123,
+          52.2200781
+        ]
+      },
+      "id": "node/2731458512"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458513",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C24",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7191815,
+          52.2201245
+        ]
+      },
+      "id": "node/2731458513"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458515",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C25",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7190165,
+          52.220388
+        ]
+      },
+      "id": "node/2731458515"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458520",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C26",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7189397,
+          52.2204321
+        ]
+      },
+      "id": "node/2731458520"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458524",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C27",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7193339,
+          52.2206238
+        ]
+      },
+      "id": "node/2731458524"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458529",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C28",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7193129,
+          52.2206905
+        ]
+      },
+      "id": "node/2731458529"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458533",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C29",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7186788,
+          52.2208265
+        ]
+      },
+      "id": "node/2731458533"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458538",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C3",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.719714,
+          52.2202643
+        ]
+      },
+      "id": "node/2731458538"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458543",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C30",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.718751,
+          52.2208454
+        ]
+      },
+      "id": "node/2731458543"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458548",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C31",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7192722,
+          52.220913
+        ]
+      },
+      "id": "node/2731458548"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458554",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C32",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7193478,
+          52.2209364
+        ]
+      },
+      "id": "node/2731458554"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458556",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C4",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7197902,
+          52.2202202
+        ]
+      },
+      "id": "node/2731458556"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458557",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C5",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7201541,
+          52.2199723
+        ]
+      },
+      "id": "node/2731458557"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458559",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C6",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.720234,
+          52.219928
+        ]
+      },
+      "id": "node/2731458559"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458565",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C7",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7207057,
+          52.2198399
+        ]
+      },
+      "id": "node/2731458565"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458574",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C8",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7207647,
+          52.2197875
+        ]
+      },
+      "id": "node/2731458574"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458586",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-C9",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.721137,
+          52.220035
+        ]
+      },
+      "id": "node/2731458586"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458596",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H1",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7227267,
+          52.2201775
+        ]
+      },
+      "id": "node/2731458596"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458606",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H10",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.720017,
+          52.220409
+        ]
+      },
+      "id": "node/2731458606"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458617",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H11",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7197066,
+          52.220542
+        ]
+      },
+      "id": "node/2731458617"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458628",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H12",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7201388,
+          52.2208737
+        ]
+      },
+      "id": "node/2731458628"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458638",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H13",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7199677,
+          52.221036
+        ]
+      },
+      "id": "node/2731458638"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458648",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H14",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7196993,
+          52.2211378
+        ]
+      },
+      "id": "node/2731458648"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458659",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H15",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7190719,
+          52.220862
+        ]
+      },
+      "id": "node/2731458659"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458669",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H16",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7194619,
+          52.2203807
+        ]
+      },
+      "id": "node/2731458669"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458681",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H17",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7200504,
+          52.2193602
+        ]
+      },
+      "id": "node/2731458681"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458691",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H18",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7204258,
+          52.219623
+        ]
+      },
+      "id": "node/2731458691"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458711",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H2",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7227692,
+          52.2198263
+        ]
+      },
+      "id": "node/2731458711"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458722",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H3",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7224518,
+          52.2200806
+        ]
+      },
+      "id": "node/2731458722"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458733",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H4",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7224611,
+          52.219791
+        ]
+      },
+      "id": "node/2731458733"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458743",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H5",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7222299,
+          52.2197096
+        ]
+      },
+      "id": "node/2731458743"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458752",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H6",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7215603,
+          52.2199273
+        ]
+      },
+      "id": "node/2731458752"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458764",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H7",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7208297,
+          52.2200838
+        ]
+      },
+      "id": "node/2731458764"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458774",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H8",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7206443,
+          52.22018
+        ]
+      },
+      "id": "node/2731458774"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458784",
+        "addr:city": "Garderen",
+        "addr:housenumber": "62-H9",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7202377,
+          52.2202948
+        ]
+      },
+      "id": "node/2731458784"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731458824",
+        "addr:city": "Garderen",
+        "addr:housenumber": "64",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7205051,
+          52.220958
+        ]
+      },
+      "id": "node/2731458824"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731459593",
+        "addr:city": "Garderen",
+        "addr:housenumber": "70",
+        "addr:postcode": "3886MJ",
+        "addr:street": "Oud Milligenseweg",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7227694,
+          52.2194976
+        ]
+      },
+      "id": "node/2731459593"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731459749",
+        "addr:city": "Garderen",
+        "addr:housenumber": "78",
+        "addr:postcode": "3886MP",
+        "addr:street": "Apeldoornsestraat",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7242079,
+          52.2181363
+        ]
+      },
+      "id": "node/2731459749"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/2731459858",
+        "addr:city": "Garderen",
+        "addr:housenumber": "80",
+        "addr:postcode": "3886MP",
+        "addr:street": "Apeldoornsestraat",
+        "source": "BAG",
+        "source:date": "2014-02-11"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          5.7243837,
+          52.2181628
+        ]
+      },
+      "id": "node/2731459858"
+    }
+  ]
+}

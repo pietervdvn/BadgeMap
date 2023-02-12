@@ -7,6 +7,8 @@ def drawLine(x, y, x1, y1, color):
 def flush():
     pass
 
+def getTextWidth(string):
+    return 42
 
 def drawText(x, y, string, text_color=0x000000):
     print("Drawing text " + string + " at " + str(x) + "," + str(y))

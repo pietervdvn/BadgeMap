@@ -1,3 +1,5 @@
+# Stub of the 'display'-module
+
 def drawLine(x, y, x1, y1, color):
     print("Draw line between " + str(x) + "," + str(y) + " " + str(x1) + "," + str(y1) + " in " + str(color))
 

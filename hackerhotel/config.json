@@ -1,0 +1,36 @@
+{
+  "#name": "Name of the event",
+  "name": "Hackerhotel",
+  "#start": "[x,y, z] start location to load",
+  "start": [1226, 401, 16],
+  "#max": "Max bounds",
+  "max": [3359,2040],
+  "#layers": "Layers to render; in order with their types",
+  "layers":[
+    "highways.lines",
+    "buildings.lines",
+    "rooms.lines",
+    "addresses.points",
+    "rooms.points"
+  ],
+  "style": {
+    "buildings.lines": [255,0,0],
+    "highways.lines": [255,255,255],
+    "addresses.points": {
+      "fg": [255,255,255],
+      "bg": [0,198,88],
+      "minzoom": 17
+    },
+    "rooms.lines": [198,198,198],
+    "rooms.points": {
+      "fg": [255,255,255],
+      "bg": [0,0,0],
+      "minzoom": 18
+    },
+    "selected.points": {
+      "fg": [0,0,0],
+      "bg": [255,255,255],
+      "minzoom": 0
+    }
+  }
+}
