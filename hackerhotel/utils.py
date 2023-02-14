@@ -1,7 +1,10 @@
 import urequests as requests
 
+
 def downloadToFile(url, filename):
-    r = requests.request("GET", url, None, None)
+    if url is None:
+        raise "downloadToFile cannot work without an URL, it is NONE"
+    r = requests.get(url)
     print("Attempting to save to " + filename)
     text = r.text
     r.close()

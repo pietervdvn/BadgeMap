@@ -2,7 +2,7 @@
   "type": "FeatureCollection",
   "generator": "overpass-ide",
   "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
-  "timestamp": "2023-02-11T18:21:25Z",
+  "timestamp": "2023-02-12T01:28:18Z",
   "features": [
     {
       "type": "Feature",
@@ -1758,7 +1758,8 @@
       "type": "Feature",
       "properties": {
         "@id": "way/1143845152",
-        "highway": "pedestrian"
+        "highway": "pedestrian",
+        "level": "0"
       },
       "geometry": {
         "type": "LineString",
@@ -1792,7 +1793,8 @@
       "properties": {
         "@id": "way/1143845153",
         "highway": "corridor",
-        "indoor": "yes"
+        "indoor": "yes",
+        "level": "0"
       },
       "geometry": {
         "type": "LineString",
@@ -1822,7 +1824,8 @@
       "properties": {
         "@id": "way/1143845154",
         "highway": "corridor",
-        "indoor": "yes"
+        "indoor": "yes",
+        "level": "0"
       },
       "geometry": {
         "type": "LineString",
@@ -1859,7 +1862,8 @@
       "type": "Feature",
       "properties": {
         "@id": "way/1143845155",
-        "highway": "corridor"
+        "highway": "corridor",
+        "level": "0"
       },
       "geometry": {
         "type": "LineString",
@@ -1956,7 +1960,8 @@
       "type": "Feature",
       "properties": {
         "@id": "way/1143845163",
-        "highway": "pedestrian"
+        "highway": "pedestrian",
+        "level": "0"
       },
       "geometry": {
         "type": "LineString",
@@ -1982,7 +1987,8 @@
       "properties": {
         "@id": "way/1143845164",
         "highway": "corridor",
-        "indoor": "yes"
+        "indoor": "yes",
+        "level": "0"
       },
       "geometry": {
         "type": "LineString",

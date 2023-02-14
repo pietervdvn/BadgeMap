@@ -27,3 +27,8 @@ class Navigatable:
         self.current_navigator = n
         if n is not None:
             n.update(True)
+
+    def force_update(self):
+        if self.current_navigator is not None:
+            self.current_navigator.update(True)
+        

@@ -1,25 +1,62 @@
 import math
+
 import display
 from menu import Menu, MenuItem
 
-class PointLayer:
 
+class RangedLayer:
+
+    def __init__(self, range):
+        """
+        :param range: [minx, miny, maxx, maxy]: bbox of the file
+        """
+        self.range = range
+
+    def partially_in_view(self, location):
+        """
+        :type location: Location
+        :param location: 
+        :return: 
+        """
+        l = location
+        [minx, miny] = l.unmap([0, 0])
+        [maxx, maxy] = l.unmap([display.width(), display.height()])
+
+        [layer_minx, layer_miny, layer_maxx, layer_maxy] = self.range
+        if (layer_maxx < minx or
+                layer_maxy < miny or
+                layer_miny > maxy or
+                layer_minx > maxx):
+            return False
+        return True
+
+def draw_loading(text):
+    display.drawRect(0,0, display.width(), 16, True, 0x880000)
+    display.drawText(1,1, text)
+    display.flush() 
+
+class PointLayer(RangedLayer):
     pointdata = None
 
-    def __init__(self, location, file, fg, bg, minzoom = 17, state = None):
+    def __init__(self, location, file, range, fg, bg, minzoom=17, state=None):
         """
         :type location: Location
         :type state: State
+        :type minzoom: int
+        :type fg: int
+        :type bg: int
+        :type range: [int, int, int, int]
+        :type file: string
         """
+        super().__init__(range)
         self.location = location
         self.file = file
         self.fg = fg
         self.bg = bg
-        self.minzoom = minzoom
+        self.minzoom = int(minzoom)
         if file is not None:
-            self.name = file[0 : len(file) - len(".points")]
+            self.name = file[0: len(file) - len(".points")]
         self.state = state
-        location.trigger_once.append(self._load_data)
         location.callbacks.append(self._update)
 
     def _load_data(self, location):
@@ -27,24 +64,34 @@ class PointLayer:
             return
         self.pointdata = list()
         print("Attempting to read " + self.file)
+
         with open(self.file, "r") as f:
-            meta = f.readline()
+            meta = f.readline().split(",")
+            total = int(meta[1])
+            loaded = 0
+            draw_loading("LOADING "+self.file)
             while True:
                 line = f.readline()
+                loaded += 1
                 if not line:
                     break
                 if line.strip() == "":
                     continue
+                if loaded % 10 == 0:
+                    draw_loading("LOADING "+self.file+" "+str(loaded)+"/"+str(total))
                 [xstr, ystr, levelstr, label] = line.split(",")
                 level = None
                 try:
                     level = int(levelstr)
                 except:
                     pass
-                
+
+                if label == "":
+                    continue
+
                 self.pointdata.append([int(xstr), int(ystr), level, label])
-                
-        print("Loaded "+str(len(self.pointdata))+" features from "+self.file)
+
+        print("Loaded " + str(len(self.pointdata)) + " features from " + self.file)
 
     def drawEntry(self, entry):
         [x, y, level, label] = entry
@@ -61,7 +108,14 @@ class PointLayer:
         l = self.location
         if l.z < self.minzoom:
             return
-        [minx, miny] = l.unmap([0,0])
+
+        if not self.partially_in_view(location):
+            return
+
+        if self.pointdata is None:
+            self._load_data(location)
+
+        [minx, miny] = l.unmap([0, 0])
         [maxx, maxy] = l.unmap([display.width(), display.height()])
 
         for entry in self.pointdata:
@@ -71,7 +125,7 @@ class PointLayer:
             if (x < minx or
                     y < miny or
                     y > maxy or
-                    x > maxx ):
+                    x > maxx):
                 continue
             if level is not None and self.state.level != level:
                 continue
@@ -84,29 +138,36 @@ class PointLayer:
 
     def buildSelect(self, entry):
         [x, y, level, label] = entry
-        return MenuItem(label, lambda : self.state.setSelectedElement([x,y, level, label]))
-    
+        return MenuItem(label, lambda: self.state.setSelectedElement([x, y, level, label]))
+
     def createSearchIndex(self, fallback):
         state = self.state
         items = list()
         for entry in self.pointdata:
             items.append(self.buildSelect(entry))
-        return Menu("Search "+self.name+" by name", items, fallback)
-    
-class LineLayer:
+        return Menu("Search " + self.name + " by name", items, fallback)
+
+
+class LineLayer(RangedLayer):
     linedata = None
 
-    def __init__(self, location, file, color, state):
+    def __init__(self, location, file, range, color, minzoom, state):
         """
         :type location: Location
         :type state: State
-        :param file: 
+        :param file: location of the file to load
+        :param color: color to draw the lines with
+        :param state: state for e.g. selected element
+        :param range: [minx, miny, maxx, maxy]: bbox of the file
+        
         """
+        super().__init__(range)
+        print("Loaded line layer " + file + " with range " + str(range))
         self.location = location
         self.file = file
         self.color = color
         self.state = state
-        location.trigger_once.append(self._load_data)
+        self.minzoom = minzoom
         location.callbacks.append(self._update)
 
     def parseCoord(self, s):
@@ -119,16 +180,22 @@ class LineLayer:
         return [min(lons), min(lats), max(lons), max(lats)]
 
     def _load_data(self, location):
-        if (self.linedata is not None):
+        if self.linedata is not None:
             return
         self.linedata = list()
-        print("Attempting to read " + self.file)
+        print("Attempting to read " + self.file+" (minzoom needed: "+str(self.minzoom)+", current zoom: "+str(self.location.z)+")")
         with open(self.file, "r") as f:
-            meta = f.readline()
+            meta = f.readline().split(",")
+            loaded = 0
+            total = int(meta[1])
+            draw_loading("LOADING "+self.file)
             while True:
                 line = f.readline()
+                loaded += 1
                 if not line:
                     break
+                if loaded % 10 == 0:
+                    draw_loading("LOADING "+self.file+" "+str(loaded)+"/"+str(total))
                 endOfCoordinates = line.index(" ")
                 coordsStr = line[0:endOfCoordinates]
                 coords = list(map(self.parseCoord, coordsStr.split(";")))
@@ -138,27 +205,37 @@ class LineLayer:
                 except:
                     properties[0] = None
                 self.linedata.append([coords, properties, self.bbox(coords)])
-        print("Loaded "+str(len(self.linedata))+" features from "+self.file)
+            draw_loading("     Done!")
+        print("Loaded " + str(len(self.linedata)) + " features from " + self.file)
 
     def _update(self, location):
         l = self.location
-        [minx, miny] = l.unmap([0,0])
+
+        if l.z < self.minzoom:
+            return
+
+        [minx, miny] = l.unmap([0, 0])
         [maxx, maxy] = l.unmap([display.width(), display.height()])
+
+        if not self.partially_in_view(location):
+            return
+
+        self._load_data(location)
 
         for entry in self.linedata:
             [coords, properties, [f_minlon, f_minlat, f_maxlon, f_maxlat]] = entry
             if (f_maxlon < minx or
                     f_maxlat < miny or
                     f_minlat > maxy or
-                    f_minlon > maxx ):
-                continue
-                
-            level = properties[0]
-            if level is not None and level != self.state.level:
+                    f_minlon > maxx):
                 continue
 
+            level = properties[0]
+            if level is not None and level != self.state.level:
+                # continue
+                pass
             for i in range(1, len(coords)):
-                [x,y] = l.map(coords[i - 1])
+                [x, y] = l.map(coords[i - 1])
                 [x0, y0] = l.map(coords[i])
                 display.drawLine(x, y, x0, y0, self.color)
 
@@ -168,7 +245,7 @@ class Location:
 
     x = 1226
     y = 40
-    z = 16
+    z = 18
     default_zoom = 19
 
     max_x = 999999999
@@ -182,7 +259,7 @@ class Location:
     def update(self, very_dirty=False):
         self.currently_selected = None
         self.call_callbacks()
-
+    
     def call_callbacks(self):
         for f in self.trigger_once:
             f(self)
@@ -196,21 +273,27 @@ class Location:
 
     def map(self, xy):
         """
-        converts an xy of the zoomlevel into an xy on the screen, keeping track of zoom and current offset
+        converts an xy of the zoomlevel the data is defined at into an xy on the screen, keeping track of current zoom and current offset
         :param xy: 
         :return: 
         """
         [x, y] = xy
         zdiff = self.default_zoom - self.z
-        factor = 2 ** zdiff
+        factor = 2 ** (zdiff - 1)
         x = (x - self.x) / factor
         y = (y - self.y) / factor
         return [x, y]
 
-    def unmap(self, xy):
+    def unmap(self, xy, z=None):
+        """
+        Converts an x,y-location on the screen (for the current zoom level) into an x,y-location that the data is defined at.
+        Allows to override the current zoom level
+        :param xy: 
+        :return: 
+        """
         [x, y] = xy
-        zdiff = self.default_zoom - self.z
-        factor = 2 ** zdiff
+        zdiff = self.default_zoom - (z if z is not None else self.z)
+        factor = 2 ** (zdiff - 1)
         x = (x * factor) + self.x
         y = (y * factor) + self.y
         return [x, y]
@@ -219,7 +302,7 @@ class Location:
         if (self.z >= 20):
             return
         self.z = self.z + 1
-        upperleft = self.unmap([0,0])
+        upperleft = self.unmap([0, 0])
         bottomright = self.unmap([display.width(), display.height()])
         dx = bottomright[0] - upperleft[0]
         dy = bottomright[1] - upperleft[1]
@@ -230,7 +313,7 @@ class Location:
     def zoom_out(self):
         if (self.z <= 12):
             return
-        upperleft = self.unmap([0,0])
+        upperleft = self.unmap([0, 0])
         bottomright = self.unmap([display.width(), display.height()])
         dx = bottomright[0] - upperleft[0]
         dy = bottomright[1] - upperleft[1]
@@ -248,8 +331,9 @@ class Location:
             self.zoom_out()
             return
 
-        dy = math.floor(display.height()) / 2
-        dx = math.floor(display.width()) / 2
+        factor = (2 ** (self.default_zoom - self.z - 1))
+        dy = math.floor(factor * display.height() / 4)
+        dx = math.floor(factor * display.width() / 4)
         if dir == "up":
             if self.y >= dy:
                 self.y -= dy

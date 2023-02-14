@@ -17,7 +17,7 @@ echo "import os"
 cat hackerhotel/utils.py
 
 echo ""
-echo "host = \"http://$my_ip:8080/\""
+echo "host = \"http://$my_ip:8081/\""
 
 echo "os.chdir(\"sd/apps/python/hackerhotel\")"
 
@@ -26,7 +26,7 @@ for F in ./hackerhotel/*
 do
   
   FF=`echo $F | sed 's/^\\.\\/hackerhotel\\///'`
-  if [[ $FF = "display.py" || $FF = "buttons.py" || $FF = "__pycache__" || $FF = "mch22.py" || $FF = "wifi.py" ]]
+  if [[ $FF = "display.py" || $FF = "buttons.py" || $FF = "__pycache__" || $FF = "mch22.py" || $FF = "wifi.py" || $FF = "mapdata" || $FF = "utime.py" || $FF = "urequests.py" ]]
   then
     echo "Skipping $FF" > /dev/null
   else
@@ -38,14 +38,12 @@ do
   fi
 done
 
-echo "def l():"
-echo "    downloadToFile(host + \"Main.py\", \"Main.py\")"
-echo "    run()"
-
 echo "def run():"
 echo "    os.chdir(\"/sd/apps/python/hackerhotel\")"
-echo "    f = open(\"Main.py\")"
+echo "    f = open(\"main_entry.py\")"
 echo "    script = f.read()"
 echo "    f.close()"
 echo "    exec(script)"
-echo "l()"
+echo "def l():"
+echo "    downloadToFile(host + \"main_entry.py\", \"main_entry.py\")"
+echo "    run()"

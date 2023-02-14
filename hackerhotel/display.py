@@ -7,7 +7,7 @@ def drawLine(x, y, x1, y1, color):
 def flush():
     pass
 
-def getTextWidth(string):
+def getTextWidth(string, font):
     return 42
 
 def drawText(x, y, string, text_color=0x000000, font=None, xscale=1, yscale=1):
@@ -31,4 +31,12 @@ def height():
 
 
 def brightness(brightness):
-    print("Changed brightness")
+    """
+    Value between 0 and 255
+    :param brightness: 
+    :return: 
+    """
+    print("Changed brightness to "+str(brightness))
+
+def get_brightness():
+    return 100 
