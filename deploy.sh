@@ -18,8 +18,10 @@ cat hackerhotel/utils.py
 
 echo ""
 echo "host = \"http://$my_ip:8081/\""
+echo "targetdir = \"/lib/hackerhotel\""
+# echo "targetdir = \"/sd/apps/python/hackerhotel\""
 
-echo "os.chdir(\"sd/apps/python/hackerhotel\")"
+echo "os.chdir(targetdir)"
 
 echo "def update():"
 for F in ./hackerhotel/*
@@ -39,11 +41,12 @@ do
 done
 
 echo "def run():"
-echo "    os.chdir(\"/sd/apps/python/hackerhotel\")"
+echo "    os.chdir(targetdir)"
 echo "    f = open(\"main_entry.py\")"
 echo "    script = f.read()"
 echo "    f.close()"
 echo "    exec(script)"
 echo "def l():"
-echo "    downloadToFile(host + \"main_entry.py\", \"main_entry.py\")"
+echo "    downloadToFile(host + \"DeskClock.py\", \"main_entry.py\")"
+echo "    gc.collect()"
 echo "    run()"

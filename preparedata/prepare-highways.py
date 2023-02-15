@@ -32,6 +32,7 @@ def maxc(geometry):
 
 directory = "brugge"  # input("Please, enter the directory to scan: ")
 target_directory = "../hackerhotel/mapdata/"
+debug_data = "<svg >"
 
 if not os.path.exists(target_directory):
     os.mkdir(target_directory)
@@ -51,7 +52,7 @@ for file in os.listdir(directory):
             topleft_lat = max(maxlat, topleft_lat)
 
 # Zoom determines the zoom factor and thus the precision
-z = 30
+z = 20
 
 
 
@@ -87,15 +88,13 @@ def createMeta(type, count,keys):
     return type+","+str(count)+","+",".join(keys)
 
 def exportLabels(features, keys, file, x, y):
+    features = list(filter(lambda:f["geometry"]["type"] != "MultiPolygon" and keys[0] in f["properties"],  features))
+    
     if len(features) == 0:
         return
     file = target_directory+"/"+str(x)+"_"+str(y)+"_"+file+".points"
     data = createMeta("point", len(features), keys)+ "\n"
     for f in features:
-        if f["geometry"]["type"] == "MultiPolygon":
-            continue
-        if keys[0] not in f["properties"]:
-            continue
         label = f["properties"][keys[0]]
         if label.strip() == "":
             continue
@@ -119,7 +118,8 @@ def exportLabels(features, keys, file, x, y):
 
 def exportLines(features, keys, file, x, y):
     if len(features) == 0:
-        return
+        return ""
+    debug_data = ""
     file = target_directory+"/"+str(x)+"_"+str(y)+"_"+file+".lines"
     data = createMeta("line", len(features), keys)+ "\n"
     for f in features:
@@ -132,9 +132,13 @@ def exportLines(features, keys, file, x, y):
         if geometry["type"] != "Polygon":
             coordinatess = [coordinatess]
         for coordinates in coordinatess:
-            coordinates = map(lonlat_to_xy, coordinates)
+            coordinates = list(map(lonlat_to_xy, coordinates))
             data += ";".join(map(lambda c :str(c[0])+","+str(c[1]), coordinates))
             data += " "
+            
+            svg_path = "M"+str(coordinates[0][0])+" "+str(coordinates[0][1])+" "+" ".join(map(lambda c : "L"+str(c[0])+" "+str(c[1]), coordinates[1:]))
+            debug_data += "\n<path stroke='black' stroke-width='0.3' d=\""+svg_path+"\" />"
+            
             if("level" in f["properties"]):
                 data += str(f["properties"]["level"])
             else:
@@ -144,11 +148,11 @@ def exportLines(features, keys, file, x, y):
                 if key in f["properties"]:
                     data += f["properties"][key]
             data += "\n"
+            
     f = open(file, "w")
     f.write(data)
     f.close()
-    
-    
+    return debug_data
 
     
 def read_geojson(inputfile, mustHaveProperties):
@@ -182,23 +186,37 @@ for file in os.listdir(directory):
     print("Range between tiles is" + str([x0 - x, y0 - y]) )
     features = read_geojson(directory+"/"+ file, ["highway"])
     residential = list(filter(lambda f:  f["properties"]["highway"] in ["residential","living_street","unclassified"], features))
-    exportLines(residential, [], "residential", x, y)
+    debug_data += exportLines(residential, [], "residential", x, y)
     exportLabels(residential, ["name"], "residential", x, y)
 
-    cycle = list(filter(lambda f:  f["properties"]["highway"] in ["cycleway"] , features))
-    exportLines(cycle, [], "cycleways", x, y)
+    cycle = list(filter(lambda f:  f["properties"]["highway"] in ["cycleway","pedestrian"] , features))
+    debug_data += exportLines(cycle, [], "cycleways", x, y)
 
-    foot = list(filter(lambda f:  f["properties"]["highway"] in ["footway","path","service","steps","corridor"], features))
-    exportLines(foot, [], "footways", x, y)
+    foot = list(filter(lambda f:  f["properties"]["highway"] in ["footway","path","steps","corridor"], features))
+    debug_data += exportLines(foot, [], "footways", x, y)
     exportLabels(foot, ["name"], "footways", x, y)
 
+    service = list(filter(lambda f:  f["properties"]["highway"] in ["service"], features))
+    debug_data += exportLines(service, [], "service", x, y)
+
     tertiary = list(filter(lambda f: f["properties"]["highway"] in ["tertiary", "tertiary_link","secondary","secondary_link"], features))
-    exportLines(tertiary, [], "tertiary", x, y)
+    debug_data += exportLines(tertiary, [], "tertiary", x, y)
 
     motor = list(filter(lambda f: f["properties"]["highway"] in ["trunk","trunk_link","primary","primary_link"], features))
-    exportLines(motor, [], "motor", x, y)
+    debug_data += exportLines(motor, [], "motor", x, y)
     
 all_files = os.listdir(target_directory)
+all_files.sort()
+
+if not os.path.exists(target_directory+"/debug"):
+    os.mkdir(target_directory+"/debug")
+
+f = open(target_directory+"/debug/debug.svg", "w")
+debug_data += "\n</svg>\n"
+f.write(debug_data)
+f.close()
+
+
 
 f = open(target_directory+"/all.txt", "w")
 f.write(str(len(all_files))+"\n")

@@ -1,8 +1,5 @@
 import math
-
 import display
-from menu import Menu, MenuItem
-
 
 class RangedLayer:
 
@@ -60,7 +57,7 @@ class PointLayer(RangedLayer):
         location.callbacks.append(self._update)
 
     def _load_data(self, location):
-        if (self.pointdata is not None):
+        if self.pointdata is not None:
             return
         self.pointdata = list()
         print("Attempting to read " + self.file)
@@ -136,17 +133,6 @@ class PointLayer(RangedLayer):
     def update(self):
         self._update(self.location)
 
-    def buildSelect(self, entry):
-        [x, y, level, label] = entry
-        return MenuItem(label, lambda: self.state.setSelectedElement([x, y, level, label]))
-
-    def createSearchIndex(self, fallback):
-        state = self.state
-        items = list()
-        for entry in self.pointdata:
-            items.append(self.buildSelect(entry))
-        return Menu("Search " + self.name + " by name", items, fallback)
-
 
 class LineLayer(RangedLayer):
     linedata = None
@@ -162,7 +148,6 @@ class LineLayer(RangedLayer):
         
         """
         super().__init__(range)
-        print("Loaded line layer " + file + " with range " + str(range))
         self.location = location
         self.file = file
         self.color = color
@@ -232,8 +217,7 @@ class LineLayer(RangedLayer):
 
             level = properties[0]
             if level is not None and level != self.state.level:
-                # continue
-                pass
+                continue
             for i in range(1, len(coords)):
                 [x, y] = l.map(coords[i - 1])
                 [x0, y0] = l.map(coords[i])
@@ -279,7 +263,7 @@ class Location:
         """
         [x, y] = xy
         zdiff = self.default_zoom - self.z
-        factor = 2 ** (zdiff - 1)
+        factor = 2 ** zdiff
         x = (x - self.x) / factor
         y = (y - self.y) / factor
         return [x, y]
@@ -293,13 +277,13 @@ class Location:
         """
         [x, y] = xy
         zdiff = self.default_zoom - (z if z is not None else self.z)
-        factor = 2 ** (zdiff - 1)
+        factor = 2 ** zdiff
         x = (x * factor) + self.x
         y = (y * factor) + self.y
         return [x, y]
 
     def zoom_in(self):
-        if (self.z >= 20):
+        if self.z >= 24:
             return
         self.z = self.z + 1
         upperleft = self.unmap([0, 0])
@@ -311,7 +295,7 @@ class Location:
         self.call_callbacks()
 
     def zoom_out(self):
-        if (self.z <= 12):
+        if self.z <= 2:
             return
         upperleft = self.unmap([0, 0])
         bottomright = self.unmap([display.width(), display.height()])

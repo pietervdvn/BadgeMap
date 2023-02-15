@@ -1,142 +1,157 @@
 {
   "#name": "Name of the event",
   "name": "Badge Companion app",
-  "#start": "[x, y, z] start location to load",
-  "start": [
-    1226,
-    401,
-    19
-  ],
-  "#max": "Max bounds",
-  "max": [
-    3359,
-    2040
-  ],
-  "#layers": "Layers to render; in order with their types",
-  "map_data_source": "http://192.168.88.71:8081//mapdata",
-  "style": {
-    "residential.lines": {
-      "minzoom": 18,
-      "color": [
-        255,
-        255,
-        255
-      ]
-    },
-    "tertiary.lines": {
-      "minzoom": 13,
-      "color": [
-        245,
-        245,
-        128
-      ]
-    },
-    "motor.lines": {
-      "minzoom": 6,
-      "color": [
-        200,
-        25,
-        45
-      ]
-    },
-    "cycleways.lines": {
-      "minzoom": 18,
-      "color": [
-        0,
-        0,
-        255
-      ]
-    },
-    "footways.lines": {
-      "minzoom": 19,
-      "color": [
-        255,
-        0,
-        0
-      ]
-    },
-    "addresses.points": {
-      "fg": [
-        255,
-        255,
-        255
-      ],
-      "bg": [
-        0,
-        198,
-        88
-      ],
-      "minzoom": 18
-    },
-    "rooms.lines": [
-      198,
-      198,
-      198
+  "map": {
+    "#": "Map specific options",
+    "show_coordinates": false,
+    "show_button_labels": false,
+    "#start": "[x, y, z] start location to load",
+    "start": [
+      1876,
+      2042,
+      20
     ],
-    "residential.points": {
-      "fg": [
-        255,
-        255,
-        255
+    "#layers": "Layers to render; in order with their types",
+    "map_data_source": "http://192.168.88.71:8081//mapdata",
+    "style": {
+      "residential.lines": {
+        "minzoom": 18,
+        "color": [
+          255,
+          255,
+          255
+        ]
+      },
+      "tertiary.lines": {
+        "minzoom": 13,
+        "color": [
+          245,
+          245,
+          128
+        ]
+      },
+      "motor.lines": {
+        "minzoom": 6,
+        "color": [
+          200,
+          25,
+          45
+        ]
+      },
+      "cycleways.lines": {
+        "minzoom": 19,
+        "color": [
+          0,
+          0,
+          255
+        ]
+      },
+      "service.lines": {
+        "minzoom": 21,
+        "color": [
+          100,
+          130,
+          120
+        ]
+      },
+      "footways.lines": {
+        "minzoom": 21,
+        "color": [
+          255,
+          0,
+          0
+        ]
+      },
+      "addresses.points": {
+        "fg": [
+          255,
+          255,
+          255
+        ],
+        "bg": [
+          0,
+          198,
+          88
+        ],
+        "minzoom": 18
+      },
+      "rooms.lines": [
+        198,
+        198,
+        198
       ],
-      "bg": [
-        0,
-        0,
-        0
-      ],
-      "minzoom": 20
-    },
-    "cycleways.points": {
-      "fg": [
-        255,
-        255,
-        255
-      ],
-      "bg": [
-        0,
-        0,
-        0
-      ],
-      "minzoom": 20
-    },
-    "footways.points": {
-      "fg": [
-        255,
-        255,
-        255
-      ],
-      "bg": [
-        0,
-        0,
-        0
-      ],
-      "minzoom": 20
-    },
-    "rooms.points": {
-      "fg": [
-        255,
-        255,
-        255
-      ],
-      "bg": [
-        0,
-        0,
-        0
-      ],
-      "minzoom": 18
-    },
-    "selected.points": {
-      "fg": [
-        0,
-        0,
-        0
-      ],
-      "bg": [
-        255,
-        255,
-        255
-      ],
-      "minzoom": 0
+      "residential.points": {
+        "fg": [
+          255,
+          255,
+          255
+        ],
+        "bg": [
+          0,
+          0,
+          0
+        ],
+        "minzoom": 20
+      },
+      "cycleways.points": {
+        "fg": [
+          255,
+          255,
+          255
+        ],
+        "bg": [
+          0,
+          0,
+          0
+        ],
+        "minzoom": 20
+      },
+      "footways.points": {
+        "fg": [
+          255,
+          255,
+          255
+        ],
+        "bg": [
+          0,
+          0,
+          0
+        ],
+        "minzoom": 20
+      },
+      "rooms.points": {
+        "fg": [
+          255,
+          255,
+          255
+        ],
+        "bg": [
+          0,
+          0,
+          0
+        ],
+        "minzoom": 18
+      },
+      "selected.points": {
+        "fg": [
+          0,
+          0,
+          0
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ],
+        "minzoom": 0
+      },
+      "selected.lines": {
+        "color": [
+          255,
+          0,
+          255
+        ]
+      }
     }
   }
 }

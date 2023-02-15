@@ -16,3 +16,10 @@ def time():
     :return: 
     """
     return (datetime.now() - datetime.utcfromtimestamp(0)).total_seconds()
+
+
+def gmtime(secs = None):
+    return localtime()
+
+def mktime(date_tuple):
+    return 0
