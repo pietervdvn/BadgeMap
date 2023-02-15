@@ -55,34 +55,6 @@ WEEKDAYS = {
 
 TOPIC_INFO = b'home/house/alert/info_string'
 
-
-def sum_date(date0, date1):
-    summed = tuple(
-        map(lambda tpl: tpl[0] + tpl[1], zip(date0, date1)))
-    _normalize_sum(summed)
-    return summed
-
-
-def _normalize_sum(date):
-    if (date[5] >= 60):
-        date[4] += date[5] // 60
-        date[5] %= 60
-    if (date[4] >= 60):
-        date[3] += date[4] // 60
-        date[4] %= 60
-    if (date[3] >= 24):
-        date[2] += date[3] // 24
-        date[2] %= 24
-
-
-def init_wifi():
-    """Set up the WiFi."""
-    if wifi.status():
-        return True
-    wifi.connect()
-    return wifi.wait()
-
-
 class VEvent:
 
     def __init__(self, properties):
@@ -484,10 +456,13 @@ class Main:
 
         display.drawFill(WHITE)
         self.log("Connecting to WiFi...")
+        wifi.connect()
         wifi.wait()
-        if not wifi.status():
-            self.log("Wifi not connected, exiting")
-            return
+        while not wifi.status():
+            self.log("Wifi not connected, waiting a bit more")
+            utime.sleep(1)
+            wifi.connect()
+            wifi.wait()
         self.log("Wifi connected! Syncing ntp")
         wifi.ntp()
         self.log("Ntp synced!")
