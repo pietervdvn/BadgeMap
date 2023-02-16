@@ -14,7 +14,7 @@ echo "wifi.connect()"
 echo "wifi.wait()"
 
 echo "import os"
-cat hackerhotel/utils.py
+echo "import urequests as requests"
 
 echo ""
 echo "host = \"http://$my_ip:8081/\""
@@ -31,22 +31,13 @@ do
   if [[ $FF = "display.py" || $FF = "buttons.py" || $FF = "__pycache__" || $FF = "mch22.py" || $FF = "wifi.py" || $FF = "mapdata" || $FF = "utime.py" || $FF = "urequests.py" ]]
   then
     echo "Skipping $FF" > /dev/null
-  else
-    
-    # echo "$F --> /sdcard/apps/python/$FF"
-    # cp $F /media/pietervdvn/3938-3063/apps/python/$FF
-    # python3 ./mch2022-tools-master/webusb_push.py $F  /sdcard/apps/python/$FF
+  elif [[ -d "$FF" ]]
+  then
+    # This is a directory
+    echo "    # Skipping directory '$FF'"
+  else  
     echo "    downloadToFile(host + \"$FF\", \"$FF\")"
   fi
 done
 
-echo "def run():"
-echo "    os.chdir(targetdir)"
-echo "    f = open(\"main_entry.py\")"
-echo "    script = f.read()"
-echo "    f.close()"
-echo "    exec(script)"
-echo "def l():"
-echo "    downloadToFile(host + \"DeskClock.py\", \"main_entry.py\")"
-echo "    gc.collect()"
-echo "    run()"
+cat deploy.py

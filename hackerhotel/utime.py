@@ -1,13 +1,15 @@
 from datetime import datetime
+import calendar
+import time as time_mod
 """
 https://docs.micropython.org/en/latest/library/time.html
 """
 
 def localtime(secs = None):
-    return (2023,12,31,23,59,59,6,366)
+    return time_mod.localtime(secs)
 
 def sleep(param):
-    return
+    time_mod.sleep(param)
 
 
 def time():
@@ -19,7 +21,8 @@ def time():
 
 
 def gmtime(secs = None):
-    return localtime()
+    return time_mod.gmtime(secs)
 
 def mktime(date_tuple):
-    return 0
+    t = datetime(date_tuple[0], date_tuple[1], date_tuple[2],date_tuple[3] ,date_tuple[4],date_tuple[5])
+    return calendar.timegm(t.timetuple())

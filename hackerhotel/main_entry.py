@@ -5,6 +5,7 @@ import utime
 import wifi
 from drawmap import Location
 import utils
+from map_init import MapInitializator
 from menu import Menu, MenuItem
 from navigatable import Navigatable
 # from map_init import MapInitializator
@@ -127,9 +128,9 @@ class Main:
         navigator.set_navigator(mainmenu)
         buttons.attach(buttons.BTN_MENU, lambda b: navigator.set_navigator(mainmenu))
 
-        # [searchMenu] = map_init.init_map(config["map"])
-        # items[0] = MenuItem("Open Map", lambda: navigator.set_navigator(maplocation))
-        # items[1] = MenuItem("Search", lambda: navigator.set_navigator(searchMenu))
+        [searchMenu] = map_init.init_map(config["map"])
+        items[0] = MenuItem("Open Map", lambda: navigator.set_navigator(maplocation))
+        items[1] = MenuItem("Search", lambda: navigator.set_navigator(searchMenu))
 
         mainmenu.update(True)
 

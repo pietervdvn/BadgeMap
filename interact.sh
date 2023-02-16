@@ -1,7 +1,7 @@
 #! /bin/bash
 # Start the 'python' app, then run the command below for a python interpreter
 
-if [ -f /dev/ttyACM0 ]
+if [[ -f /dev/ttyACM0 ]]
 then
   screen /dev/ttyACM0 115200
 else

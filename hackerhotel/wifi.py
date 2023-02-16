@@ -5,6 +5,8 @@ def status():
 def connect():
     return None
 
+def disconnect():
+    return None
 
 def wait():
     return True
