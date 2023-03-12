@@ -29,6 +29,9 @@ WEEKDAYS_ICS = {
 }
 
 def normalize_date(tpl):
+    """
+    Makes sure a date is well-formatted and the weekday-indicator is correct
+    """
     while tpl[1] <= 0:
         tpl = (tpl[0] - 1, tpl[1] + 12, tpl[2], tpl[3], tpl[4], tpl[5], tpl[6], tpl[7])
     while tpl[1] >= 13:
@@ -63,6 +66,10 @@ class RepeatedVEvent:
         :return: 
         """
         parts = self.properties["RRULE"].split(";")
+        exception_dates = set()
+        if "EXDATE" in self.properties:
+            exception_dates = set(map(VEvent.parse_date , self.properties["EXDATE"].split(",")))
+        print("Exception dates for "+self.properties["SUMMARY"]+" are " +str(exception_dates))
         rrule_props = {}
         for part in parts:
             [k, v] = part.split("=")
@@ -138,7 +145,8 @@ class RepeatedVEvent:
                     del properties["RRULE"]
                     properties["DTSTART"] = VEvent.format_date(event_start)
                     properties["DTEND"] = VEvent.format_date(event_end)
-
+                    if properties["DTSTART"] in exception_dates:
+                        continue
                     ve = VEvent(properties)
                     events.append(ve)
             return events
@@ -162,6 +170,8 @@ class RepeatedVEvent:
                 properties = dict(self.properties)
                 properties["DTSTART"] = VEvent.format_date(start_date_ev_i)
                 properties["DTEND"] = VEvent.format_date(end_date_ev_i)
+                if properties["DTSTART"] in exception_dates:
+                    continue
                 found_events.append(VEvent(properties))
             return found_events
 
@@ -192,6 +202,8 @@ class RepeatedVEvent:
                 properties = dict(self.properties)
                 properties["DTSTART"] = VEvent.format_date(start_date_ev_i)
                 properties["DTEND"] = VEvent.format_date(end_date_ev_i)
+                if properties["DTSTART"] in exception_dates:
+                    continue
                 found_events.append(VEvent(properties))
             return found_events
 
@@ -214,20 +226,25 @@ class VEvent:
                                                            datetime[4], datetime[5])
     @staticmethod
     def parse_date(datetime, isEndDate=False):
-        year = int(datetime[0:4])
-        month = int(datetime[4:6])
-        day = int(datetime[6:8])
-        if len(datetime) <= 8 and isEndDate:
-            return year, month, day, 23, 59, 59, 0, 0
-        if len(datetime) <= 8:
-            return year, month, day, 0, 0, 0, 0, 0
-        hour = int(datetime[9:11])
-        min = int(datetime[11:13])
-        sec = int(datetime[13:15])
-        tpl = (year, month, day, hour, min, sec, 0, 0)
-        return utime.gmtime(int(utime.mktime(tpl)))
+        try:
+            year = int(datetime[0:4])
+            month = int(datetime[4:6])
+            day = int(datetime[6:8])
+            if len(datetime) <= 8 and isEndDate:
+                return year, month, day, 23, 59, 59, 0, 0
+            if len(datetime) <= 8:
+                return year, month, day, 0, 0, 0, 0, 0
+            hour = int(datetime[9:11])
+            min = int(datetime[11:13])
+            sec = int(datetime[13:15])
+            tpl = (year, month, day, hour, min, sec, 0, 0)
+            return utime.gmtime(int(utime.mktime(tpl)))
+        except Exception as e:
+            print("Could not parse "+datetime+" due to "+str(e) )
 
     def whole_day(self):
+        if "DTSTART" not in self.properties:
+            return True
         return not (self.properties["DTSTART"].find("T") > 0 and self.properties["DTEND"].find("T") > 0)
 
     def start_time(self):
@@ -271,19 +288,28 @@ class VEvent:
             l = self.properties["SUMMARY"]
         return l
 
-    def draw_on_display(self, format_time, fgcolor, bgcolor, x=0, y=0, flush=True):
-        strt_tuple = self.start_time()
+    def draw_on_display(self, format_time, format_date, fgcolor, bgcolor, x=0, y=0, flush=True):
+        strt_tuple = normalize_date(self.start_time())
 
         today = utime.localtime()
         midnight = utime.mktime((today[0], today[1], today[2], 0, 0, 0, 0, 0))
         coming_midnight = utime.localtime(int(midnight) + 24 * 60 * 60)
         strt = format_time(strt_tuple)
         if self.whole_day():
+            strt = format_date(strt_tuple)
+            end = format_date(normalize_date( self.end_time()))
+            print("Multiday, strt tupl:" + str(strt_tuple)+" end: " + end)
+            
+            if strt == end:
+                display.drawText(x, y, WEEKDAYS[strt_tuple[6]])
+                display.drawText(x, y + display.getTextHeight(strt) + 1, strt)
+            else:
+                display.drawText(x, y, strt)
+                display.drawText(x, y + display.getTextHeight(strt) + 1, end)
             x += display.getTextWidth("00:00") + 5
         elif coming_midnight < self.start_time():
             # Not today - we show a day of week instead + starting hour
             display.drawText(x, y, WEEKDAYS[strt_tuple[6]])
-            end = format_time(self.end_time())
             display.drawText(x, y + display.getTextHeight(strt) + 1, strt)
             x += display.getTextWidth("00:00") + 5
             pass
@@ -298,7 +324,7 @@ class VEvent:
             loc = utils.str_safe(self.properties["LOCATION"])
             loc_w = display.getTextWidth(loc)
             display.drawText(display.width() - loc_w, y + 8, loc, fgcolor)
-        display.drawText(x, y, utils.str_safe(self.properties["SUMMARY"]), fgcolor, summary_font)
+        display.drawText(x, y + 2, utils.str_safe(self.properties["SUMMARY"]), fgcolor, summary_font)
         line_y = y + 6 + display.getTextHeight("Abcdef", summary_font)
         display.drawLine(x, line_y, display.width() - 5, line_y, 0x888888)
         if flush:
@@ -361,19 +387,31 @@ class Calendar:
             with open(self.path_to_save, 'w') as target:
                 lines = []
                 should_save = False
+                include_multilines = False
                 copied = 0
                 while True:
-                    if linecount % 500 == 0:
+                    if linecount % 1000 == 0:
                         print("Skipping/copying lines, currently handled " + str(linecount) + " and found " + str(
                             copied) + " events")
+                        msg = "Updating "+self.name+": parsed "+str(linecount // 1000) + "K lines"
+                        display.drawRect(0, display.height() - 12, display.getTextWidth(msg), 12, True, 0xffffff)
+                        display.drawText(0, display.height() - 12, msg)
+                        display.flush()
                         gc.collect()
                     line = f.readline(500)
                     linecount += 1
                     if line is None or line == "":
+                        msg = "Updating "+self.name+": parsed full file"
+                        display.drawRect(0, display.height() - 12, display.getTextWidth(msg), 12, True, 0xffffff)
+                        display.drawText(0, display.height() - 12, msg)
+                        display.flush()
                         break
                     if line.startswith(" "):
-                        # Multiline stuff is always to long to handle
-                        continue
+                        if not include_multilines:
+                            # Multiline stuff is always to long to handle
+                            continue
+                    else:
+                        include_multilines = False
                     line = line.rstrip("\n\r")
                     if line == "":
                         continue
@@ -381,6 +419,11 @@ class Calendar:
                     lines.append(line)
                     if line.startswith("RRULE"):
                         should_save = True
+                        continue
+                    if line.startswith("EXDATE"):
+                        # exception dates: dates not conforming the normal schedule
+                        # we save it, including multilines
+                        include_multilines = True
                         continue
                     if line.startswith("DTEND"):
                         [_, date] = line.split(":")
@@ -476,16 +519,11 @@ class Calendar:
                     current_properties = {}
                     continue
                 if line == "END:VEVENT":
-
+                    print("Handling event "+str(total))
                     if "RRULE" in current_properties:
                         r_vevent = RepeatedVEvent(current_properties)
-                        should_continue = True
                         for ev in r_vevent.generate_events(start_timestamp, end_timestamp):
-                            should_continue = on_event(ev, total)
-                            if not should_continue:
-                                break
-                        if not should_continue:
-                            break
+                            on_event(ev, total)
                     else:
                         vevent = VEvent(current_properties)
                         if not vevent.activeDuring(utime.gmtime(start_timestamp), utime.gmtime(end_timestamp)):

@@ -3,9 +3,8 @@ import buttons
 import display
 import utime
 import wifi
+import math
 from Calendar import Calendar, WEEKDAYS
-
-# import ubinascii
 
 EUROPE_LONDON = 'GMT+0BST-1,M3.5.0/01:00:00,M10.5.0/02:00:00'
 EUROPE_BRUSSELS = 'CET-1CEST-2,M3.5.0/02:00:00,M10.5.0/03:00:00'
@@ -25,6 +24,7 @@ class Main:
     calendars = []
     timezone_offset = 1
     page = 0
+    last_page_change = 0
     eligible_events = []
     lastclick = 0
     lastclick_key = None
@@ -72,6 +72,7 @@ class Main:
             datestr_y = display.height() - datestr_h - 12
 
         if (big_clock):
+            display.drawFill(self.background_color)
             display.drawText(12, 0, time_str, font_color, '7x5', 8, 8)
         else:
             display.drawRect(0, 0, 0, datestr_h, True, self.background_color)
@@ -126,17 +127,18 @@ class Main:
             display.flush()
             return
 
-        if not soft and not self.dirty:
+        if not soft and not self.dirty or self.bigclock_mode:
             self.dirty = False
             display.drawFill(self.background_color)
-        elif self.bigclock_mode:
+        else:
             w = display.getTextWidth("00:00","7x5") * 8
             h = display.getTextHeight("00:00","7x5") * 8
             display.drawRect(0,0, w, h, True, self.background_color)
             display.flush()
+            
         y = self.draw_time(flush=False)
         for event in self.eligible_events[0:3]:
-            y = event.draw_on_display(self.format_time, self.font_color, self.background_color, 2, y, flush=False)
+            y = event.draw_on_display(self.format_time, self._format_date, self.font_color, self.background_color, 2, y, flush=False)
         display.flush()
 
 
@@ -147,11 +149,32 @@ class Main:
         y = 0
         max_page_count = len(self.eligible_events)/items_per_page
         for ev in self.eligible_events[range_start: range_start + items_per_page]:
-            y = ev.draw_on_display(self.format_time, self.font_color, self.background_color, 2, y, flush=False)
-        msg =  "Page "+str(self.page)+"/"+str(max_page_count)
+            y = ev.draw_on_display(self.format_time, self._format_date, self.font_color, self.background_color, 2, y, flush=False)
+        msg = "Page "+str(self.page + 1)+"/"+str(math.ceil(max_page_count))
         msg_w = display.getTextWidth(msg)
-        display.drawText(0, display.width() - msg_w, msg, self.font_color)
+        display.drawText(display.width() - msg_w, 0, msg, self.font_color)
         display.flush()
+        self.last_page_change = utime.time()
+
+    def recent_click(self, key):
+        got_recent = utime.time() - self.lastclick < 1
+        last_key = self.lastclick_key
+        self.lastclick_key = key
+        self.lastclick = utime.time()
+        return last_key == key and got_recent
+
+    def set_page(self, diff, key):
+        if self.recent_click(key):
+            return
+        if utime.time() - self.last_page_change < 3:
+            print("Not changing page: update is very fresh")
+            return
+        print("Setting and drawing page, diff "+str(diff)+" current: "+str(self.page))
+        self.page = max(0, self.page + diff)
+        self.page = min(self.page, len(self.eligible_events) // 5)
+        display.drawFill(self.background_color)
+        self.draw_page()
+        self.dirty = True
 
     @property
     def main(self):
@@ -192,20 +215,8 @@ class Main:
             display.drawFill(self.background_color)
             self.draw_display()
 
-        self.quit = False
-
-        def recent_click(key):
-            got_recent = utime.time() - self.lastclick < 1
-            last_key = self.lastclick_key
-            self.lastclick_key = key
-            self.lastclick = utime.time()
-            return last_key == key and got_recent < 1
-
-        def set_quit(button):
-            self.quit = True
-
         def swap_mode(v, key):
-            if recent_click(key):
+            if self.recent_click(key):
                 return
             if self.bigclock_mode == v:
                 return
@@ -214,26 +225,19 @@ class Main:
             display.flush()
             self.draw_display()
 
-        def set_page(diff, key):
-            if recent_click(key):
-                return
-            self.dirty = True
-            print("Setting and drawing page, diff"+str(diff))
-            self.page = max(0, self.page + diff)
-            self.page = min(self.page, len(self.eligible_events) // 5)
-            display.drawFill(self.background_color)
-            self.draw_page()
 
         buttons.attach(buttons.BTN_A, lambda b: swap_mode(True, b))
         buttons.attach(buttons.BTN_B, lambda b: swap_mode(False, b))
 
-        buttons.attach(buttons.BTN_LEFT, lambda b: set_page(-1, b))
-        buttons.attach(buttons.BTN_RIGHT, lambda b: set_page(1, b))
+        buttons.attach(buttons.BTN_LEFT, lambda b: self.set_page(-1, b))
+        buttons.attach(buttons.BTN_RIGHT, lambda b: self.set_page(1, b))
 
         print("Attached buttons")
-        last_update_time = utime.time() // 60
         cal_update_frq = 60 * 60 * 6
+        event_reload_frq = 15 * 60
         last_cal_update_time = utime.time() // cal_update_frq
+        last_reload_time = utime.time() // event_reload_frq
+        last_update_time = utime.time() // 60
 
         self.lastclick = utime.time()
         while True:
@@ -243,12 +247,30 @@ class Main:
                 utime.sleep(3)
 
             now_rounded = utime.time() // 60
+            if self.dirty:
+                display.drawFill(self.background_color)
+                self.dirty = False
+                
+            start_times = list(filter(lambda e: not e.whole_day(), self.eligible_events))
+            earliest = start_times[0]
+            current_time = utime.time()
+            earliest_tdif = 3600 + utime.mktime(earliest.start_time()) - current_time
+            print("Earliest event:"+earliest.summary()+" at time "+str(utime.mktime(earliest.start_time()))+" curr:"+str(current_time)+" tdiff (sec): "+str(earliest_tdif))
+             
             if last_update_time != now_rounded:
+                if utime.time() - self.last_page_change < 60:
+                    print("Not changing drawing clock: user is still watching their calendar")
+                    continue
                 print("Updating: clock has changed")
                 last_update_time = now_rounded
-                display.drawRect(0,0, 120,30,True, self.background_color)
                 display.flush()
-                self.draw_display(soft=True)
+                self.draw_display(soft=not self.dirty)
+                
+            now_reload = utime.time() // event_reload_frq
+            if now_reload != last_reload_time:
+                last_reload_time = now_reload
+                self.load_eligble_events()
+                self.draw_display()
                 
             now_cal_update = utime.time() // cal_update_frq
             if last_cal_update_time != now_cal_update:
