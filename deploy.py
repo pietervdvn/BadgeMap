@@ -1,8 +1,8 @@
 def downloadToFile(url, filename):
     if url is None:
         raise "downloadToFile cannot work without an URL, it is NONE"
-    r = requests.get(url)
     print("Attempting to save to " + filename)
+    r = requests.get(url)
     text = r.text
     r.close()
     print("Received Text is " + str(len(text))+" characters long")
@@ -12,6 +12,7 @@ def downloadToFile(url, filename):
         print("Done")
     
 def run():
+    print("Starting update...")
     os.chdir(targetdir)
     f = open("main_entry.py")
     script = f.read()

@@ -18,7 +18,7 @@ echo "import urequests as requests"
 
 echo ""
 echo "host = \"http://$my_ip:8081/\""
-echo "targetdir = \"/lib/hackerhotel\""
+echo "targetdir = \"/lib/deskcalendar\""
 # echo "targetdir = \"/sd/apps/python/hackerhotel\""
 
 echo "os.chdir(targetdir)"

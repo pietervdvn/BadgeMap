@@ -1,0 +1,9 @@
+[
+  {
+    "#: calendar_config.json should contain a list, containing one entry per calendar to load",
+    "username": "<username>",
+    "password": "<password>",
+    "name": "Personal (the name to refer to)",
+    "url": "<url>"
+  }
+]

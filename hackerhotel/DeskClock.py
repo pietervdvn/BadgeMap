@@ -194,9 +194,12 @@ class Main:
         display.drawFill(WHITE)
         self.draw_time()
         config = []
-        with open("calendar_config.json", "r") as f:
-            config = json.loads(f.read())
-
+        try:
+            with open("calendar_config.json", "r") as f:
+                config = json.loads(f.read())
+        except:
+            print("ERROR: could not open 'calendar_config.json' - make sure the file exists and is valid JSON")
+            
         for calconf in config:
             url = calconf["url"]
             name = calconf["name"]
@@ -251,11 +254,10 @@ class Main:
                 display.drawFill(self.background_color)
                 self.dirty = False
                 
-            start_times = list(filter(lambda e: not e.whole_day(), self.eligible_events))
-            earliest = start_times[0]
-            current_time = utime.time()
-            earliest_tdif = 3600 + utime.mktime(earliest.start_time()) - current_time
-            print("Earliest event:"+earliest.summary()+" at time "+str(utime.mktime(earliest.start_time()))+" curr:"+str(current_time)+" tdiff (sec): "+str(earliest_tdif))
+            # start_times = list(filter(lambda e: not e.whole_day(), self.eligible_events))
+            # earliest = start_times[0]
+            # current_time = utime.time()
+            # earliest_tdif = 3600 + utime.mktime(earliest.start_time()) - current_time
              
             if last_update_time != now_rounded:
                 if utime.time() - self.last_page_change < 60:
