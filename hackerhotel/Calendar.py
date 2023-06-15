@@ -93,7 +93,10 @@ class RepeatedVEvent:
         end_date_seconds = int(end_date_seconds)
         start_date_tpl = time.gmtime(start_date_seconds)
         end_date_tpl = time.gmtime(end_date_seconds)
-
+        if end_date_ev0 < end_date_seconds:
+            print("Not generating events for ",self.properties,"end date falls before expected time")
+            return []
+        
 
         freq = rrule_props["FREQ"]
 
@@ -115,6 +118,12 @@ class RepeatedVEvent:
                 month_end_timestamp = int(utime.mktime(normalize_date(
                     (start_date_ev0_tuple[0], start_date_ev0_tuple[1] + interval * c + 1, 1, 0, 0, 0, 0, 0))))
                 month_end = utime.gmtime(month_end_timestamp - 24 * 60 * 60)
+                if("BYDAY" not in rrule_props):
+                    print("ERROR: rrule_props does not contain a BYDAY-field, skipping")
+                    print(rrule_props)
+                    print(self.properties)
+                    return []
+                
                 bydays = rrule_props["BYDAY"].split(",")
 
                 if utime.mktime(month_start) > end_date_seconds:
@@ -376,7 +385,7 @@ class Calendar:
             headers["Authorization"] = "Basic " + ubinascii.b2a_base64(self.username + ":" + self.password).decode(
                 "UTF8")
 
-        print("Attempting to save to " + self.path_to_save)
+        print("Attempting to save to " + self.path_to_save, self.url, headers)
         r = mrequests.get(self.url, headers=headers)
         r.save(self.path_to_save + ".temp")
         print("Got a response, written to " + self.path_to_save)

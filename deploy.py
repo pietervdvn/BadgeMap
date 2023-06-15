@@ -12,7 +12,7 @@ def downloadToFile(url, filename):
         print("Done")
     
 def run():
-    print("Starting update...")
+    print("Starting application "+targetdir+"/main_entry.py ...")
     os.chdir(targetdir)
     f = open("main_entry.py")
     script = f.read()

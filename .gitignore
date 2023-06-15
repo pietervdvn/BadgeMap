@@ -2,3 +2,5 @@
 .idea/
 hackerhotel/mapdata/
 preparedata/brugge/
+hackerhotel/calendar_config.json
+hackerhotel/calendardata/*
