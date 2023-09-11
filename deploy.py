@@ -1,7 +1,7 @@
 def downloadToFile(url, filename):
     if url is None:
         raise "downloadToFile cannot work without an URL, it is NONE"
-    print("Attempting to save to " + filename)
+    print("Attempting to save to " + filename+" from "+url)
     r = requests.get(url)
     text = r.text
     r.close()
@@ -19,8 +19,4 @@ def run():
     f.close()
     exec(script)
     
-def l():
-    os.chdir(targetdir)
-    downloadToFile(host + "DeskClock.py", "main_entry.py")
-    gc.collect()
-    run()
+

@@ -28,7 +28,7 @@ for F in ./hackerhotel/*
 do
   
   FF=`echo $F | sed 's/^\\.\\/hackerhotel\\///'`
-  if [[ $FF = "display.py" || $FF = "buttons.py" || $FF = "__pycache__" || $FF = "mch22.py" || $FF = "wifi.py" || $FF = "mapdata" || $FF = "utime.py" || $FF = "urequests.py" ]]
+  if [[ $FF = "display.py" || $FF = "buttons.py" || $FF = "__pycache__" || $FF = "mch22.py" || $FF = "wifi.py" || $FF = "mapdata" || $FF = "utime.py" || $FF = "urequests.py" || $FF = "urequests.py" || $FF = "ubinascii.py" ]]
   then
     echo "Skipping $FF" > /dev/null
   elif [[ -d "$FF" ]]

@@ -180,6 +180,7 @@ class Response:
     def save(self, fn, chunk_size=1024):
         read = 0
 
+        print("MRequests: trying to write to file",fn)
         with open(fn, "wb") as fp:
             while True:
                 if self.chunked:

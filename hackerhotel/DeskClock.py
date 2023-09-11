@@ -4,6 +4,7 @@ import display
 import utime
 import wifi
 import math
+import os
 from Calendar import Calendar, WEEKDAYS
 
 EUROPE_LONDON = 'GMT+0BST-1,M3.5.0/01:00:00,M10.5.0/02:00:00'
@@ -178,7 +179,10 @@ class Main:
 
     @property
     def main(self):
-
+        print("Booting the DeskClock")
+        print("Setting active directory")
+        appdir = "/lib/deskcalendar"
+        os.chdir(appdir)
         display.drawFill(WHITE)
         self.log("Connecting to WiFi...")
         wifi.connect()
@@ -206,9 +210,9 @@ class Main:
             print("Loading calendar " + url)
             cal = None
             if "password" in calconf:
-                cal = Calendar(name, url, calconf["username"], calconf["password"])
+                cal = Calendar(name, url, appdir, calconf["username"], calconf["password"])
             else:
-                cal = Calendar(name, url)
+                cal = Calendar(name, url, appdir)
             self.calendars.append(cal)
 
         self.update_calendars()

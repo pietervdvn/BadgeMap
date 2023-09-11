@@ -1,12 +1,13 @@
 import gc
 import os
 import time
-import utils
+
 import display
-import utime
-import wifi
 import mrequests
 import ubinascii
+import utils
+import utime
+import wifi
 
 WEEKDAYS = {
     1: 'Sun',
@@ -28,6 +29,7 @@ WEEKDAYS_ICS = {
     6: 'SU'
 }
 
+
 def normalize_date(tpl):
     """
     Makes sure a date is well-formatted and the weekday-indicator is correct
@@ -41,6 +43,7 @@ def normalize_date(tpl):
         return utime.gmtime(int(tpl))
     return utime.gmtime(int(utime.mktime(tpl)))
 
+
 def add_days(tpl, day_diff):
     time_stamp = int(utime.mktime(tpl))
     return utime.gmtime(time_stamp + 24 * 60 * 60 * day_diff)
@@ -48,6 +51,7 @@ def add_days(tpl, day_diff):
 
 def add_year(tpl, year_diff):
     return normalize_date((tpl[0] + year_diff, tpl[1], tpl[2], tpl[3], tpl[4], tpl[5], tpl[6], tpl[7]))
+
 
 class RepeatedVEvent:
     frequences = {
@@ -68,8 +72,9 @@ class RepeatedVEvent:
         parts = self.properties["RRULE"].split(";")
         exception_dates = set()
         if "EXDATE" in self.properties:
-            exception_dates = set(map(VEvent.parse_date , self.properties["EXDATE"].split(",")))
-        print("Exception dates for "+self.properties["SUMMARY"]+" are " +str(exception_dates))
+            exception_dates = set(map(VEvent.parse_date, self.properties["EXDATE"].split(",")))
+        if(len(exception_dates) > 0):
+            print("Exceptional dates for " + self.properties["SUMMARY"] + " are " + str(exception_dates))
         rrule_props = {}
         for part in parts:
             [k, v] = part.split("=")
@@ -92,11 +97,8 @@ class RepeatedVEvent:
         start_date_seconds = int(start_date_seconds)
         end_date_seconds = int(end_date_seconds)
         start_date_tpl = time.gmtime(start_date_seconds)
-        end_date_tpl = time.gmtime(end_date_seconds)
         if end_date_ev0 < end_date_seconds:
-            print("Not generating events for ",self.properties,"end date falls before expected time")
             return []
-        
 
         freq = rrule_props["FREQ"]
 
@@ -113,39 +115,45 @@ class RepeatedVEvent:
                     break
                 # take the start of the next month where this event happens:
                 month_start = normalize_date(
-                    (start_date_ev0_tuple[0], start_date_ev0_tuple[1] + interval * c, 1, 0, 0, 0,0 ,0))
+                    (start_date_ev0_tuple[0], start_date_ev0_tuple[1] + interval * c, 1, 0, 0, 0, 0, 0))
                 # end of the month:VEvent.form take the next month at day 'zero'
                 month_end_timestamp = int(utime.mktime(normalize_date(
                     (start_date_ev0_tuple[0], start_date_ev0_tuple[1] + interval * c + 1, 1, 0, 0, 0, 0, 0))))
                 month_end = utime.gmtime(month_end_timestamp - 24 * 60 * 60)
-                if("BYDAY" not in rrule_props):
+
+                if "BYDAY" not in rrule_props:
                     print("ERROR: rrule_props does not contain a BYDAY-field, skipping")
                     print(rrule_props)
                     print(self.properties)
                     return []
-                
+
                 bydays = rrule_props["BYDAY"].split(",")
 
                 if utime.mktime(month_start) > end_date_seconds:
-                    print("Not generating more events, "+str(month_start)+" falls after "+str(utime.gmtime(end_date_seconds)))
+                    print("Not generating more events, " + str(month_start) + " falls after " + str(
+                        utime.gmtime(end_date_seconds)))
                     break
                 for byday in bydays:
                     week_index = int(byday[0:-2])
                     weekday = byday[-2:]
 
-                    week_start = normalize_date((month_start[0], month_start[1], 1 + 7 * (week_index - 1), 0, 0, 0, 0 ,0))
+                    week_start = normalize_date(
+                        (month_start[0], month_start[1], 1 + 7 * (week_index - 1), 0, 0, 0, 0, 0))
                     if week_index < 0:
                         week_start = normalize_date(
                             (month_end[0], month_end[1], month_end[2] + 7 * week_index, 0, 0, 0, 0, 0))
                     day = week_start
                     while WEEKDAYS_ICS[day[6] % 7] != weekday:
-                        day = normalize_date((day[0], day[1], day[2] + 1, day[3], day[4], day[5], (day[6] + 1) % 7, day[7] + 1))
+                        day = normalize_date(
+                            (day[0], day[1], day[2] + 1, day[3], day[4], day[5], (day[6] + 1) % 7, day[7] + 1))
 
                     event_start = (
-                        day[0], day[1], day[2], start_date_ev0_tuple[3], start_date_ev0_tuple[4], start_date_ev0_tuple[5],
+                        day[0], day[1], day[2], start_date_ev0_tuple[3], start_date_ev0_tuple[4],
+                        start_date_ev0_tuple[5],
                         day[6], day[7])
                     event_end = (
-                        day[0], day[1], day[2], end_date_ev0_tuple[3], end_date_ev0_tuple[4], end_date_ev0_tuple[5], day[6],
+                        day[0], day[1], day[2], end_date_ev0_tuple[3], end_date_ev0_tuple[4], end_date_ev0_tuple[5],
+                        day[6],
                         day[7])
                     if utime.mktime(event_end) < start_date_seconds or end_date_seconds < utime.mktime(event_start):
                         continue
@@ -171,8 +179,8 @@ class RepeatedVEvent:
             while c < 999:
                 start_date_ev_i = add_year(ev_strt, c)
                 end_date_ev_i = add_year(ev_end, c)
-                c+=1
-                if(time.mktime(start_date_ev_i) > end_date_seconds):
+                c += 1
+                if (time.mktime(start_date_ev_i) > end_date_seconds):
                     break
                 if time.mktime(end_date_ev_i) < start_date_seconds:
                     continue
@@ -183,8 +191,6 @@ class RepeatedVEvent:
                     continue
                 found_events.append(VEvent(properties))
             return found_events
-
-
 
         in_between_time = self.frequences[rrule_props["FREQ"]]
 
@@ -216,7 +222,6 @@ class RepeatedVEvent:
                 found_events.append(VEvent(properties))
             return found_events
 
-
         print(rrule_props)
         print(str(self.properties))
         raise Exception("Loading vevent for " + self.properties["RRULE"])
@@ -233,6 +238,7 @@ class VEvent:
             datetime = time.gmtime(datetime)
         return "{0}{1:02}{2:02}T{3:02}{4:02}{5:02}".format(datetime[0], datetime[1], datetime[2], datetime[3],
                                                            datetime[4], datetime[5])
+
     @staticmethod
     def parse_date(datetime, isEndDate=False):
         try:
@@ -249,7 +255,7 @@ class VEvent:
             tpl = (year, month, day, hour, min, sec, 0, 0)
             return utime.gmtime(int(utime.mktime(tpl)))
         except Exception as e:
-            print("Could not parse "+datetime+" due to "+str(e) )
+            print("Could not parse " + datetime + " due to " + str(e))
 
     def whole_day(self):
         if "DTSTART" not in self.properties:
@@ -306,9 +312,9 @@ class VEvent:
         strt = format_time(strt_tuple)
         if self.whole_day():
             strt = format_date(strt_tuple)
-            end = format_date(normalize_date( self.end_time()))
-            print("Multiday, strt tupl:" + str(strt_tuple)+" end: " + end)
-            
+            end = format_date(normalize_date(self.end_time()))
+            print("Multiday, strt tupl:" + str(strt_tuple) + " end: " + end)
+
             if strt == end:
                 display.drawText(x, y, WEEKDAYS[strt_tuple[6]])
                 display.drawText(x, y + display.getTextHeight(strt) + 1, strt)
@@ -345,12 +351,14 @@ class Calendar:
     def __init__(self,
                  calendar_name,
                  url,
+                 appDir,
                  username=None,
                  password=None,
                  ):
         print("Initing calendar with URL:" + url)
         self.name = calendar_name
-        self.path_to_save = "calendardata/" + calendar_name
+        self.targetdir = appDir+"/calendardata0"
+        self.path_to_save = self.targetdir + "/" + calendar_name
         self.password = password
         self.username = username
         self.url = url
@@ -361,9 +369,15 @@ class Calendar:
         :param allowed_difference: if version on disk is less then 'allowed_difference'-old, don't download
         :return: 
         """
-        if "calendardata" not in os.listdir():
-            os.mkdir("calendardata")
-
+        targetdir = self.targetdir
+        print("Current directory:", os.getcwd(), "target dir", targetdir)
+        if targetdir not in os.listdir():
+            print("Creating directory "+targetdir)
+            try:
+                os.mkdir(targetdir)
+            except:
+                print("Could not create directory")
+                
         if allowed_difference is not None:
             try:
                 with open(self.path_to_save + ".meta", "r") as fmeta:
@@ -402,7 +416,7 @@ class Calendar:
                     if linecount % 1000 == 0:
                         print("Skipping/copying lines, currently handled " + str(linecount) + " and found " + str(
                             copied) + " events")
-                        msg = "Updating "+self.name+": parsed "+str(linecount // 1000) + "K lines"
+                        msg = "Updating " + self.name + ": parsed " + str(linecount // 1000) + "K lines"
                         display.drawRect(0, display.height() - 12, display.getTextWidth(msg), 12, True, 0xffffff)
                         display.drawText(0, display.height() - 12, msg)
                         display.flush()
@@ -410,7 +424,7 @@ class Calendar:
                     line = f.readline(500)
                     linecount += 1
                     if line is None or line == "":
-                        msg = "Updating "+self.name+": parsed full file"
+                        msg = "Updating " + self.name + ": parsed full file"
                         display.drawRect(0, display.height() - 12, display.getTextWidth(msg), 12, True, 0xffffff)
                         display.drawText(0, display.height() - 12, msg)
                         display.flush()
@@ -453,7 +467,7 @@ class Calendar:
                                 target.write(line + "\n")
                             target.flush()
             # os.rmdir(self.path_to_save + ".temp")
-            print("Seen "+str(linecount)+" lines in "+self.path_to_save+".temp")
+            print("Seen " + str(linecount) + " lines in " + self.path_to_save + ".temp")
             modification_time = utime.time()
             with open(self.path_to_save + ".meta", "w") as fmeta:
                 fmeta.write(str(modification_time))
@@ -490,7 +504,6 @@ class Calendar:
             :type event: VEvent
             :type index: int
             """
-            print("Handling event " + str(index) +" "+ event.summary()+" "+str(event.start_time()))
             if event.properties is None:
                 return True
             if event.activeDuring(utime.gmtime(int(start_date_sec)), utime.gmtime(int(end_date_sec))):
@@ -528,11 +541,13 @@ class Calendar:
                     current_properties = {}
                     continue
                 if line == "END:VEVENT":
-                    print("Handling event "+str(total))
                     if "RRULE" in current_properties:
                         r_vevent = RepeatedVEvent(current_properties)
-                        for ev in r_vevent.generate_events(start_timestamp, end_timestamp):
-                            on_event(ev, total)
+                        try:
+                            for ev in r_vevent.generate_events(start_timestamp, end_timestamp):
+                                on_event(ev, total)
+                        except :
+                            print("ERROR: Could not generate a series of events for", current_properties)
                     else:
                         vevent = VEvent(current_properties)
                         if not vevent.activeDuring(utime.gmtime(start_timestamp), utime.gmtime(end_timestamp)):
@@ -558,4 +573,3 @@ class Calendar:
                 props = line.split(":")
                 key = props[0].split(";")[0]
                 current_properties[key] = props[1]
-
