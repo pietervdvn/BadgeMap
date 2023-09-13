@@ -23,7 +23,7 @@ class Main:
     :type list[Calendar]
     """
     calendars = []
-    timezone_offset = 1
+    timezone_offset = 2
     page = 0
     last_page_change = 0
     eligible_events = []
@@ -41,7 +41,7 @@ class Main:
         self.logline += 1
 
     def format_time(self, datetime, apply_offset=True):
-        hours = datetime[3] + (self.timezone_offset if apply_offset else 0)
+        hours = datetime[3] + (self.timezone_offset if apply_offset else 1)
         minutes = datetime[4]
         return '%02d:%02d' % (hours, minutes)
 
@@ -58,7 +58,7 @@ class Main:
         """
         if datetime is None:
             datetime = utime.localtime()
-        time_str = self.format_time(datetime, True)
+        time_str = self.format_time(datetime, False)
         print("Time to display: ", time_str)
         big_clock = self.bigclock_mode
         font_color = self.font_color
